@@ -1,0 +1,44 @@
+Table Template {
+  id number
+  data string
+}
+
+Table Block {
+  id number
+  data string
+}
+
+Table Role {
+  id number
+  name string
+}
+
+Table Menu {
+  id number
+  name string
+  pathname string
+}
+
+Table Function {
+  id number
+  name string
+}
+
+Table Role_Menu {
+  roleId number [ref: > Role.id]
+  menuId number [ref: > Menu.id]
+}
+
+Table Role_Function {
+  roleId number [ref: > Role.id]
+  functionId number [ref: > Function.id]
+}
+
+Table User {
+  id number
+  username string
+  email string
+  password string
+  fullName string
+  roleId number [ref: > Role.id]
+}

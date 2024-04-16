@@ -18,7 +18,7 @@ class TemplateController {
 				res.json({
 					code: 0,
 					data: result,
-					totalLength: allTemplates.length,
+					total: allTemplates.length,
 					message: "Lấy danh sách template thành công",
 				});
 			} else {

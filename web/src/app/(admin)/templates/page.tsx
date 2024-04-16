@@ -1,6 +1,9 @@
 'use client'
 
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+
+import { Template } from "@/types/template";
 
 import {
   Card,
@@ -10,11 +13,30 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import TemplateTable from "@/components/templateTable";
+import TemplateTable from "@/components/template-table";
 import { toast } from "sonner"
+
+//? APIS
+import { getTemplateList } from "@/services/templateApi";
 
 function Templates() {
   const router = useRouter();
+
+  const [templateList, setTemplateList] = useState<Template[]>([]);
+
+  useEffect(() => {
+    fetchTemplateList()
+  }, [])
+  
+  async function fetchTemplateList() {
+    const params = new URLSearchParams()
+    const res = await getTemplateList(params);
+    console.log("🚀 ~ fetchTemplateList ~ res:", res)
+
+    if (res.code === 0) {
+      setTemplateList(res.data)
+    }
+  }
 
   function handleRedirectToBuilder() {
     toast("Redirecting to builder...", {
@@ -37,7 +59,7 @@ function Templates() {
         </CardHeader>
         <Separator />
         <CardContent>
-          <TemplateTable />
+          <TemplateTable data={templateList} />
         </CardContent>
       </Card>
     </div>

@@ -1,6 +1,8 @@
 "use client";
 
 import * as React from "react";
+import { formatDateWithTime } from "@/lib/format";
+
 import {
   CaretSortIcon,
   DotsHorizontalIcon,
@@ -41,18 +43,7 @@ import {
 } from "@/components/ui/table";
 import { Template } from "@/types/template";
 
-const data: Template[] = [
-  {
-    id: "m5gr84i9",
-    title: "Template 1",
-  },
-  {
-    id: "m5gr84i1",
-    title: "Template 2",
-  },
-];
-
-export const columns: ColumnDef<Template>[] = [
+const columns: ColumnDef<Template>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -93,7 +84,7 @@ export const columns: ColumnDef<Template>[] = [
   {
     accessorKey: "createdAt",
     header: 'Created At',
-    cell: ({ row }) => <div>{row.getValue("createdAt")}</div>,
+    cell: ({ row }) => <div>{formatDateWithTime(row.getValue("createdAt"))}</div>,
   },
   {
     id: "actions",
@@ -117,7 +108,11 @@ export const columns: ColumnDef<Template>[] = [
   },
 ];
 
-function TemplateTable() {
+type Props = {
+  data: Template[];
+};
+
+function TemplateTable({ data = [] }: Props) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -149,10 +144,10 @@ function TemplateTable() {
     <div className="w-full">
       <div className="flex items-center py-4">
         <Input
-          placeholder="Filter emails..."
-          value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
+          placeholder="Search"
+          value={(table.getColumn("title")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
-            table.getColumn("email")?.setFilterValue(event.target.value)
+            table.getColumn("title")?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
         />
@@ -266,4 +261,5 @@ function TemplateTable() {
   );
 }
 
+export { columns }
 export default TemplateTable;

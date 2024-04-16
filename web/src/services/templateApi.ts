@@ -1,29 +1,29 @@
 import axiosClient from "./axiosClient";
-import type { Template } from "../types/template";
+import type { Template, TemplateListResponse, TemplateResponse } from "../types/template";
 
 const group = "templates"
 
-const templateApi = {
-	getList(params: URLSearchParams) {
-		const url = `${group}`;
-		return axiosClient.get(url, { params });
-	},
-	getItem(id: string) {
-		const url = `${group}/${id}`;
-		return axiosClient.get(url);
-	},
-	add(data: Template) {
-		const url = `${group}`;
-		return axiosClient.post(url, data);
-	},
-	updated(data: Template) {
-		const url = `${group}/${data.id}`;
-		return axiosClient.put(url, data);
-	},
-	remove(id: string) {
-		const url = `${group}/${id}`;
-		return axiosClient.delete(url);
-	},
-};
+export async function getTemplateList(params: URLSearchParams): Promise<TemplateListResponse> {
+	const url = `${group}`;
+	return axiosClient.get(url, { params });
+}
 
-export default templateApi;
+export function findTemplate(id: string): Promise<TemplateResponse> {
+	const url = `${group}/${id}`;
+	return axiosClient.get(url);
+}
+
+export function createTemplate(data: Template) {
+	const url = `${group}`;
+	return axiosClient.post(url, data);
+}
+
+export function updateTemplate(data: Template) {
+	const url = `${group}/${data._id}`;
+	return axiosClient.put(url, data);
+}
+
+export function deleteTemplate(id: string) {
+	const url = `${group}/${id}`;
+	return axiosClient.delete(url);
+}

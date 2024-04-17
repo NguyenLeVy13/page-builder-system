@@ -1,6 +1,9 @@
 "use client";
 
-import { useState, useRef, useMemo, useCallback } from "react";
+import {
+  useState,
+  useMemo,
+} from "react";
 import { formatDateWithTime } from "@/lib/format";
 
 import {
@@ -39,7 +42,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { toast } from "sonner";
 
 import { Template } from "@/types/template";
 import Link from "next/link";
@@ -49,12 +51,8 @@ type Props = {
   onDeleteTemplate: (templateId: string) => void;
 };
 
-function TemplateTable({
-  data = [],
-  onDeleteTemplate = (templateId: string) => {},
-}: Props) {
-  const dataValue = useRef(data);
-
+function TemplateTable(
+  { data = [], onDeleteTemplate = (templateId: string) => {} }: Props) {
   const columns: ColumnDef<Template>[] = useMemo(() => {
     return [
       {

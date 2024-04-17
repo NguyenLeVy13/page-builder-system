@@ -51,6 +51,10 @@ function Templates() {
     deleteConfirmDialogRef.current.open(templateId)
   }
 
+  function handleConfirmDeleteTemplate() {
+    fetchTemplateList()
+  }
+
   return (
     <div>
       <Card>
@@ -66,7 +70,7 @@ function Templates() {
         </CardContent>
       </Card>
 
-      <DeleteConfirmDialog ref={deleteConfirmDialogRef} />
+      <DeleteConfirmDialog ref={deleteConfirmDialogRef} onConfirm={handleConfirmDeleteTemplate} />
     </div>
   );
 }

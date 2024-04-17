@@ -13,34 +13,44 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 
-type Props = {};
+type Props = {
+  onConfirm: () => void;
+};
 
 type DeleteConfirmDialogRef = {
   open: (templateId: string) => void;
 };
 
-function DeleteConfirmDialog(props: Props, ref: any) {
+function DeleteConfirmDialog({ onConfirm = () => {} }: Props, ref: any) {
   const [isOpen, setIsOpen] = useState(false);
+  const [templateId, setTemplateId] = useState("");
+
+  async function handleConfirm() {
+    await deleteTemplate(templateId);
+    setIsOpen(false);
+    onConfirm();
+  }
 
   useImperativeHandle(
     ref,
     () => ({
       open: (templateId: string) => {
-        console.log(templateId);
+        setTemplateId(templateId);
+        setIsOpen(true)
       },
     }),
     []
   );
 
   return (
-    <AlertDialog >
+    <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>Are you sure to delete this template?</AlertDialogTitle>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction>Confirm</AlertDialogAction>
+          <AlertDialogAction onClick={handleConfirm}>Confirm</AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

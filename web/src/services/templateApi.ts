@@ -1,5 +1,5 @@
 import axiosClient from "./axiosClient";
-import type { Template, TemplateCreatedResponse, TemplateListResponse, TemplateResponse } from "../types/template";
+import type { Template, TemplateCreatedResponse, TemplateDeletedResponse, TemplateListResponse, TemplateResponse } from "../types/template";
 
 const group = "templates"
 
@@ -23,7 +23,7 @@ export function updateTemplate(data: Template) {
 	return axiosClient.put(url, data);
 }
 
-export function deleteTemplate(id: string) {
+export function deleteTemplate(id: string): Promise<TemplateDeletedResponse> {
 	const url = `${group}/${id}`;
 	return axiosClient.delete(url);
 }

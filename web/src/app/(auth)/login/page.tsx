@@ -1,5 +1,5 @@
 import Image from "next/image"
-import LoginForm from "@/components/login-form"
+import LoginForm from "./components/login-form"
 
 function LoginPage() {
   return (

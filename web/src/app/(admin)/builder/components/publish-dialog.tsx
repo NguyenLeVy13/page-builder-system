@@ -1,6 +1,6 @@
 "use client";
 
-import { forwardRef, useImperativeHandle, useRef, useState } from "react";
+import { forwardRef, useCallback, useImperativeHandle, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -69,10 +69,10 @@ function PublishDialog(props: Props, ref: any) {
     }
   }
 
-  function close() {
+  const close = useCallback(() => {
     form.reset();
     setIsOpen(false);
-  }
+  }, [form])
 
   useImperativeHandle(
     ref,
@@ -83,7 +83,7 @@ function PublishDialog(props: Props, ref: any) {
       },
       close,
     }),
-    []
+    [close]
   );
 
   return (

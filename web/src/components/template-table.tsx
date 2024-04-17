@@ -40,6 +40,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Template } from "@/types/template";
+import Link from "next/link";
 
 const columns: ColumnDef<Template>[] = [
   {
@@ -88,6 +89,12 @@ const columns: ColumnDef<Template>[] = [
     id: "actions",
     enableHiding: false,
     cell: ({ row }) => {
+      const template = row.original;
+      
+      function handleDeleteTemplate() {
+
+      }
+
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -97,8 +104,10 @@ const columns: ColumnDef<Template>[] = [
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuItem>Edit</DropdownMenuItem>
-            <DropdownMenuItem>Delete</DropdownMenuItem>
+            <DropdownMenuItem asChild className="cursor-pointer">
+              <Link href={`/templates/${template._id}/edit`}>Edit</Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem className="cursor-pointer" onClick={handleDeleteTemplate}>Delete</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       );
@@ -142,7 +151,7 @@ function TemplateTable({ data = [] }: Props) {
     <div className="w-full">
       <div className="flex items-center py-4">
         <Input
-          placeholder="Search"
+          placeholder="Enter title to search..."
           value={(table.getColumn("title")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
             table.getColumn("title")?.setFilterValue(event.target.value)

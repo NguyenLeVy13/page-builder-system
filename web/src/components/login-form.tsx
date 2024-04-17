@@ -34,12 +34,7 @@ function LoginForm() {
   });
 
   function formSubmit(data: z.infer<typeof FormSchema>) {
-    toast("Login...", {
-      action: {
-        label: "Close",
-        onClick: () => {},
-      },
-    })
+    toast.info("Login...")
 
     document.cookie = `user-email=${data.email}`;
     router.push("/dashboard");

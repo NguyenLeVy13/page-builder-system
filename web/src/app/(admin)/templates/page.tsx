@@ -38,12 +38,7 @@ function Templates() {
   }
 
   function handleRedirectToBuilder() {
-    toast("Redirecting to builder...", {
-      action: {
-        label: "Close",
-        onClick: () => {},
-      },
-    })
+    toast.info("Redirecting to builder...")
     router.push('/builder')
   };
 

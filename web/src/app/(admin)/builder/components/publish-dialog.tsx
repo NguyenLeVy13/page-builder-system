@@ -1,6 +1,7 @@
 "use client";
 
 import { forwardRef, useImperativeHandle, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -37,6 +38,8 @@ const FormSchema = z.object({
 type Props = {};
 
 function PublishDialog(props: Props, ref: any) {
+  const router = useRouter();
+
   const [isOpen, setIsOpen] = useState(false);
   const dataValue = useRef<string>("");
 
@@ -54,23 +57,21 @@ function PublishDialog(props: Props, ref: any) {
     };
 
     const res = await createTemplate(template);
-    console.log(res);
 
     if (res.code === 0) {
-      toast("Create template successfully!", {
-        action: {
-          label: "Close",
-          onClick: () => {},
-        },
-      });
+      toast.success("Create template successfully!");
+      close();
+
+      // Redirect to template list page
+      router.push("/templates");
     } else {
-      toast(res.message, {
-        action: {
-          label: "Close",
-          onClick: () => {},
-        },
-      });
+      toast.error(res.message);
     }
+  }
+
+  function close() {
+    form.reset();
+    setIsOpen(false);
   }
 
   useImperativeHandle(
@@ -80,10 +81,7 @@ function PublishDialog(props: Props, ref: any) {
         dataValue.current = JSON.stringify(data);
         setIsOpen(true);
       },
-      close: () => {
-        form.reset();
-        setIsOpen(false);
-      },
+      close,
     }),
     []
   );

@@ -1,10 +1,12 @@
 "use client";
 
+import { useRef } from "react";
 import { Puck } from "@measured/puck";
 import type { Data } from "@measured/puck";
 import puckConfig from "./puck.config";
 import "@measured/puck/puck.css";
 import styles from "./puck.module.css";
+import PublishDialog from "./components/publish-dialog";
 
 // Describe the initial data
 const initialData = {
@@ -348,16 +350,23 @@ const initialData = {
   },
 };
 
-// Save the data to your database
-const handlePublish = (data: Data) => {
-  console.log(data);
+type PublishDialogRef = {
+  open: (data: Data) => void;
+  close: () => void;
 };
 
 // Render Puck editor
 function Builder() {
+  const publishDialogRef = useRef<PublishDialogRef>(null);
+
+  const handleOpenPublishDialog = (data: Data) => {
+    publishDialogRef.current?.open(data);
+  };
+
   return (
     <div className={styles.container}>
-      <Puck config={puckConfig} data={initialData} onPublish={handlePublish} />
+      <Puck config={puckConfig} data={initialData} onPublish={handleOpenPublishDialog} />
+      <PublishDialog ref={publishDialogRef} />
     </div>
   );
 }

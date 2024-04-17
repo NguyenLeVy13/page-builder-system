@@ -120,7 +120,7 @@ function TemplateTable(
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <DropdownMenuItem asChild className="cursor-pointer">
-                  <Link href={`/templates/${templateId}/edit`}>Edit</Link>
+                  <Link href={`/builder/template/${templateId}`}>Edit</Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem
                   className="cursor-pointer"

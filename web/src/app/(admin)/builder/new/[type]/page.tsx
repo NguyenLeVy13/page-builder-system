@@ -3,13 +3,21 @@
 import { useRef } from "react";
 import { Puck } from "@measured/puck";
 import type { Data } from "@measured/puck";
-import puckConfig from "./puck.config";
+import puckConfig from "../../puck.config";
 import "@measured/puck/puck.css";
-import styles from "./puck.module.css";
-import PublishDialog from "./components/publish-dialog";
+import styles from "../../puck.module.css";
+import PublishDialog from "../../components/publish-dialog";
+import { useParams } from "next/navigation";
+import { TemplateData } from "@/types/template";
 
 // Describe the initial data
-const initialData = {
+
+type PublishDialogRef = {
+  open: (data: Data) => void;
+  close: () => void;
+};
+
+const contentExample = {
   content: [
     {
       type: "Hero",
@@ -231,7 +239,7 @@ const initialData = {
       props: { size: "96px", id: "VerticalSpace-1687284290127" },
     },
   ],
-  root: { props: { title: "Puck Example" } },
+  root: { props: { title: "Page example" } },
   zones: {
     "Columns-2d650a8ceb081a2c04f3a2d17a7703ca6efb0d06:column-0": [
       {
@@ -348,24 +356,30 @@ const initialData = {
       },
     ],
   },
-};
-
-type PublishDialogRef = {
-  open: (data: Data) => void;
-  close: () => void;
-};
+}
 
 // Render Puck editor
 function Builder() {
+  const params = useParams();
+
   const publishDialogRef = useRef<PublishDialogRef>(null);
+  const initialData = useRef<TemplateData>({
+    content: [],
+    root: { props: { title: "Page blank" } },
+    zones: {},
+  });
 
   const handleOpenPublishDialog = (data: Data) => {
     publishDialogRef.current?.open(data);
   };
 
+  if (params.type === "example") {
+    initialData.current = contentExample;
+  }
+
   return (
     <div className={styles.container}>
-      <Puck config={puckConfig} data={initialData} onPublish={handleOpenPublishDialog} />
+      <Puck config={puckConfig} data={initialData.current} onPublish={handleOpenPublishDialog} />
       <PublishDialog ref={publishDialogRef} />
     </div>
   );

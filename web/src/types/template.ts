@@ -1,7 +1,7 @@
 export type Template = {
-  _id: string;
-  createdAt: string;
-  updatedAt: string;
+  _id?: string;
+  createdAt?: string;
+  updatedAt?: string;
   title: string;
   data?: string;
 };

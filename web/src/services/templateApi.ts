@@ -1,5 +1,5 @@
 import axiosClient from "./axiosClient";
-import type { Template, TemplateListResponse, TemplateResponse } from "../types/template";
+import type { Template, TemplateCreatedResponse, TemplateListResponse, TemplateResponse } from "../types/template";
 
 const group = "templates"
 
@@ -13,7 +13,7 @@ export function findTemplate(id: string): Promise<TemplateResponse> {
 	return axiosClient.get(url);
 }
 
-export function createTemplate(data: Template) {
+export function createTemplate(data: Template): Promise<TemplateCreatedResponse> {
 	const url = `${group}`;
 	return axiosClient.post(url, data);
 }

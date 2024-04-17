@@ -31,7 +31,6 @@ function Templates() {
   async function fetchTemplateList() {
     const params = new URLSearchParams()
     const res = await getTemplateList(params);
-    console.log("🚀 ~ fetchTemplateList ~ res:", res)
 
     if (res.code === 0) {
       setTemplateList(res.data)
@@ -39,12 +38,7 @@ function Templates() {
   }
 
   function handleRedirectToBuilder() {
-    toast("Redirecting to builder...", {
-      action: {
-        label: "Close",
-        onClick: () => {},
-      },
-    })
+    toast.info("Redirecting to builder...")
     router.push('/builder')
   };
 

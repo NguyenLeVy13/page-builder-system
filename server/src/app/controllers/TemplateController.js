@@ -19,12 +19,12 @@ class TemplateController {
 					code: 0,
 					data: result,
 					total: allTemplates.length,
-					message: "Lấy danh sách template thành công",
+					message: "Get all templates successfully",
 				});
 			} else {
 				res.json({
 					code: 1,
-					message: "Lấy danh sách template thất bại",
+					message: "No template found",
 				});
 			}
 		} catch (error) {
@@ -48,12 +48,12 @@ class TemplateController {
 				res.json({
 					code: 0,
 					data: result,
-					message: "Đã tìm thấy template",
+					message: "Find template successfully",
 				});
 			} else {
 				res.json({
 					code: 1,
-					message: "Không tìm thấy template",
+					message: "No template found",
 				});
 			}
 		} catch (error) {
@@ -78,13 +78,25 @@ class TemplateController {
 				return;
 			}
 
+			// Kiểm tra title template đã tồn tại chưa
+			const itemExisted = await TemplateSchema.findOne({
+				title: payload.title,
+			});
+			if (itemExisted) {
+				res.json({
+					code: 2,
+					message: "Template title already exists",
+				});
+				return;
+			}
+
 			// create method in Schema not allowed handle prev middleware in mongoose
 			const newTemplate = new TemplateSchema(payload);
 			const createResult = await TemplateSchema.create(newTemplate);
 
 			res.json({
 				code: 0,
-				message: "Tạo template thành công",
+				message: "Create template successfully",
 			});
 		} catch (error) {
 			// Bắt lỗi
@@ -110,6 +122,21 @@ class TemplateController {
 				return;
 			}
 
+			// Kiểm tra title template đã tồn tại chưa
+			const itemExisted = await TemplateSchema.findOne({
+				$not: {
+					_id: templateId,
+				},
+				title: payload.title,
+			});
+			if (itemExisted) {
+				res.json({
+					code: 2,
+					message: "Template title already exists",
+				});
+				return;
+			}
+
 			// Cập nhật dữ liệu mới cho movie type theo id
 			const updateResult = await TemplateSchema.updateOne(
 				{
@@ -121,12 +148,12 @@ class TemplateController {
 			if (updateResult.modifiedCount > 0) {
 				res.json({
 					code: 0,
-					message: "Cập nhật template thành công",
+					message: "Update template successfully",
 				});
 			} else {
 				res.json({
 					code: 1,
-					message: "Không phát hiện dữ liệu cần chỉnh sửa",
+					message: "No template found to update",
 				});
 			}
 		} catch (error) {
@@ -149,12 +176,12 @@ class TemplateController {
 			if (deleteResult.deletedCount > 0) {
 				res.json({
 					code: 0,
-					message: "Xóa template thành công",
+					message: "Delete template successfully",
 				});
 			} else {
 				res.json({
 					code: 1,
-					message: "Không tìm thấy template cần xóa",
+					message: "No template found to delete",
 				});
 			}
 		} catch (error) {

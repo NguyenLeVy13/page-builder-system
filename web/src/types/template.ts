@@ -1,7 +1,7 @@
 export type Template = {
-  _id: string;
-  createdAt: string;
-  updatedAt: string;
+  _id?: string;
+  createdAt?: string;
+  updatedAt?: string;
   title: string;
   data?: string;
 };
@@ -18,4 +18,9 @@ export type TemplateResponse = {
   data: Template;
   message: string,
   total: number;
+};
+
+export type TemplateCreatedResponse = {
+  code: number;
+  message: string,
 };

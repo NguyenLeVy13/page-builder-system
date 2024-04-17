@@ -11,7 +11,6 @@ import {
   DialogHeader,
   DialogFooter,
   DialogTitle,
-  DialogTrigger,
   DialogClose,
 } from "@/components/ui/dialog";
 import {
@@ -24,6 +23,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 
 import type { Data } from "@measured/puck";
 
@@ -47,22 +47,30 @@ function PublishDialog(props: Props, ref: any) {
     },
   });
 
-  function formSubmit(data: z.infer<typeof FormSchema>) {
+  async function formSubmit(data: z.infer<typeof FormSchema>) {
     const template: Template = {
       title: data.title,
       data: dataValue.current, // JSON stringified data
     };
 
-    console.log(template);
+    const res = await createTemplate(template);
+    console.log(res);
 
-    // toast({
-    //   title: "You submitted the following values:",
-    //   description: (
-    //     <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-    //       <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-    //     </pre>
-    //   ),
-    // });
+    if (res.code === 0) {
+      toast("Create template successfully!", {
+        action: {
+          label: "Close",
+          onClick: () => {},
+        },
+      });
+    } else {
+      toast(res.message, {
+        action: {
+          label: "Close",
+          onClick: () => {},
+        },
+      });
+    }
   }
 
   useImperativeHandle(
@@ -73,6 +81,7 @@ function PublishDialog(props: Props, ref: any) {
         setIsOpen(true);
       },
       close: () => {
+        form.reset();
         setIsOpen(false);
       },
     }),

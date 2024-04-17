@@ -19,3 +19,8 @@ export type TemplateResponse = {
   message: string,
   total: number;
 };
+
+export type TemplateCreatedResponse = {
+  code: number;
+  message: string,
+};

@@ -31,7 +31,6 @@ function Templates() {
   async function fetchTemplateList() {
     const params = new URLSearchParams()
     const res = await getTemplateList(params);
-    console.log("🚀 ~ fetchTemplateList ~ res:", res)
 
     if (res.code === 0) {
       setTemplateList(res.data)

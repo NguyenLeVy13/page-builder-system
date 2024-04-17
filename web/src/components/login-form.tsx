@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { toast } from "@/components/ui/use-toast";
+import { toast } from "sonner"
 import {
   Form,
   FormControl,
@@ -34,14 +34,12 @@ function LoginForm() {
   });
 
   function formSubmit(data: z.infer<typeof FormSchema>) {
-    toast({
-      title: "You submitted the following values:",
-      description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-        </pre>
-      ),
-    });
+    toast("Login...", {
+      action: {
+        label: "Close",
+        onClick: () => {},
+      },
+    })
 
     document.cookie = `user-email=${data.email}`;
     router.push("/dashboard");

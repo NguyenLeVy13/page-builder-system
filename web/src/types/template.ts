@@ -35,6 +35,11 @@ export type TemplateCreatedResponse = {
   message: string,
 };
 
+export type TemplateUpdatedResponse = {
+  code: number;
+  message: string,
+};
+
 export type TemplateDeletedResponse = {
   code: number;
   message: string,

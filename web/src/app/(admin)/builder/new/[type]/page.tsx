@@ -8,12 +8,12 @@ import "@measured/puck/puck.css";
 import styles from "../../puck.module.css";
 import PublishDialog from "../../components/publish-dialog";
 import { useParams } from "next/navigation";
-import { TemplateData } from "@/types/template";
+import { Template, TemplateData } from "@/types/template";
 
 // Describe the initial data
 
 type PublishDialogRef = {
-  open: (data: Data) => void;
+  open: (data: Data, template?: Template) => void;
   close: () => void;
 };
 
@@ -380,7 +380,7 @@ function Builder() {
   return (
     <div className={styles.container}>
       <Puck config={puckConfig} data={initialData.current} onPublish={handleOpenPublishDialog} />
-      <PublishDialog ref={publishDialogRef} />
+      <PublishDialog ref={publishDialogRef} type="create" />
     </div>
   );
 }

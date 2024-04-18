@@ -1,6 +1,12 @@
 "use client";
 
-import { forwardRef, useCallback, useImperativeHandle, useRef, useState } from "react";
+import {
+  forwardRef,
+  useCallback,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from "react";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -28,20 +34,24 @@ import { toast } from "sonner";
 
 import type { Data } from "@measured/puck";
 
-import { createTemplate } from "@/services/templateApi";
+import { createTemplate, updateTemplate } from "@/services/templateApi";
 import { Template } from "@/types/template";
 
 const FormSchema = z.object({
   title: z.string().min(1, "Please enter template title."),
 });
 
-type Props = {};
+type Props = {
+  type: string;
+};
 
-function PublishDialog(props: Props, ref: any) {
+function PublishDialog({ type = "create" }: Props, ref: any) {
   const router = useRouter();
 
-  const [isOpen, setIsOpen] = useState(false);
+  const templateIdValue = useRef<string>("");
   const dataValue = useRef<any>("");
+
+  const [isOpen, setIsOpen] = useState(false);
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -56,39 +66,55 @@ function PublishDialog(props: Props, ref: any) {
       dataValue.current.root.props.title = data.title;
     }
 
-    const template: Template = {
+    const payload: Template = {
       title: data.title,
       data: JSON.stringify(dataValue.current),
     };
 
-    const res = await createTemplate(template);
+    if (type === "create") {
+      const res = await createTemplate(payload);
+      if (res.code === 0) {
+        toast.success("Create template successfully!");
+        close();
 
-    if (res.code === 0) {
-      toast.success("Create template successfully!");
-      close();
+        // Redirect to template list page
+        router.push("/templates");
+      } else {
+        toast.error(res.message);
+      }
+    } else if (type === "update") {
+      if (!templateIdValue.current) {
+        toast.error("Template ID is required.");
+        return;
+      }
 
-      // Redirect to template list page
-      router.push("/templates");
-    } else {
-      toast.error(res.message);
+      const res = await updateTemplate(templateIdValue.current, payload);
+      if (res.code === 0) {
+        toast.success("Update template successfully!");
+        close();
+      } else {
+        toast.error(res.message);
+      }
     }
   }
 
   const close = useCallback(() => {
     form.reset();
     setIsOpen(false);
-  }, [form])
+  }, [form]);
 
   useImperativeHandle(
     ref,
     () => ({
-      open: (data: Data) => {
+      open: (data: Data, template?: Template) => {
         dataValue.current = data;
+        templateIdValue.current = template?._id || "";
+        form.setValue("title", template?.title || "");
         setIsOpen(true);
       },
       close,
     }),
-    [close]
+    [close, form]
   );
 
   return (

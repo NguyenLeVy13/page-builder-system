@@ -1,9 +1,9 @@
 const express = require("express");
 const router = express.Router();
-const rolefunctionController = require("../app/controllers/RoleFunctionController");
+const roleFunctionController = require("../app/controllers/RoleFunctionController");
 
-router.get("/", rolefunctionController.getAll);
-router.post("/register", rolefunctionController.register);
-router.post("/deregister", rolefunctionController.deregister);
+router.get("/", roleFunctionController.getAll);
+router.post("/register", roleFunctionController.register);
+router.post("/deregister", roleFunctionController.deregister);
 
 module.exports = router;

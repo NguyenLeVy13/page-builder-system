@@ -24,6 +24,10 @@ function AccountDropdown() {
     router.push("/login");
   }
 
+  function handleRedirectToAccountPage() {
+    router.push("/account");
+  }
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -35,7 +39,7 @@ function AccountDropdown() {
       <DropdownMenuContent align="end">
         <DropdownMenuLabel>{userInfoCookie['full-name']}</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem className="cursor-pointer">Account</DropdownMenuItem>
+        <DropdownMenuItem className="cursor-pointer" onClick={handleRedirectToAccountPage}>Account</DropdownMenuItem>
         <DropdownMenuItem className="cursor-pointer" onClick={handleLogout}>Logout</DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

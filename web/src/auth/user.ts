@@ -15,13 +15,20 @@ export function deleteLoggedInCookie() {
 }
 
 export function getUserInfoCookie(): UserInfoCookie {
+  if (!document) return {
+    email: '',
+    id: '',
+    'full-name': '',
+    'role-id': ''
+  }
+
   const userInfoCookie: UserInfoCookie = {
     email: '',
     id: '',
     'full-name': '',
     'role-id': ''
   }
-  const cookies = document.cookie.split('; ')
+  const cookies = document.cookie?.split('; ')
 
   cookies.forEach(cookie => {
     const [name, value] = cookie.split('=')
@@ -30,4 +37,11 @@ export function getUserInfoCookie(): UserInfoCookie {
   })
   
   return userInfoCookie
+}
+
+export function setUserInfoCookie(userInfo: UserInfoCookie) {
+  const cookies = Object.entries(userInfo)
+  cookies.forEach(([key, value]) => {
+    document.cookie = `user-${key}=${value}; path=/;`
+  })
 }

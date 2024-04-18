@@ -41,7 +41,7 @@ function PublishDialog(props: Props, ref: any) {
   const router = useRouter();
 
   const [isOpen, setIsOpen] = useState(false);
-  const dataValue = useRef<string>("");
+  const dataValue = useRef<any>("");
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -51,9 +51,14 @@ function PublishDialog(props: Props, ref: any) {
   });
 
   async function formSubmit(data: z.infer<typeof FormSchema>) {
+    // Update title in data
+    if (dataValue.current?.root?.props?.title) {
+      dataValue.current.root.props.title = data.title;
+    }
+
     const template: Template = {
       title: data.title,
-      data: dataValue.current, // JSON stringified data
+      data: JSON.stringify(dataValue.current),
     };
 
     const res = await createTemplate(template);
@@ -78,7 +83,7 @@ function PublishDialog(props: Props, ref: any) {
     ref,
     () => ({
       open: (data: Data) => {
-        dataValue.current = JSON.stringify(data);
+        dataValue.current = data;
         setIsOpen(true);
       },
       close,

@@ -1,3 +1,13 @@
+export type TemplateData = {
+  content: any;
+  root: {
+    props: {
+      title: string
+    }
+  };
+  zones: any;
+}
+
 export type Template = {
   _id?: string;
   createdAt?: string;

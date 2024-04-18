@@ -1,7 +1,7 @@
 const Joi = require("joi");
 
 module.exports = {
-	// Xác thực dữ liệu đăng ký
+	// Xác thực dữ liệu đăng ký tài khoản | cập nhật thông tin tài khoản
 	register(data) {
 		const schema = Joi.object({
 			email: Joi.string()
@@ -30,6 +30,17 @@ module.exports = {
 					"string.empty": "Password must not be empty",
 					"string.min": "Password must contain at least 5 characters",
 				}),
+			fullName: Joi.string().trim().required().empty().strict().messages({
+				"string.trim":
+					"Full name not contain whitespace at the beginning and end",
+				"any.required": "Full name is required",
+			}),
+			roleId: Joi.string().trim().required().empty().strict().messages({
+				"string.trim":
+					"Role ID not contain whitespace at the beginning and end",
+				"any.required": "Role ID is required",
+				"string.empty": "Role ID must not be empty",
+			}),
 		});
 
 		return schema.validate(data);
@@ -86,5 +97,29 @@ module.exports = {
 			});
 
 		return schema.validate(password);
+	},
+
+	// Xác thực role ID khi cập nhật role
+	updateRole(roleId) {
+		const schema = Joi.string().trim().required().empty().strict().messages({
+			"string.trim":
+				"Role ID not contain whitespace at the beginning and end",
+			"any.required": "Role ID is required",
+			"string.empty": "Role ID must not be empty",
+		});
+
+		return schema.validate(roleId);
+	},
+
+	// Xác thực payload khi cập nhật thông tin tài khoản
+	updateInfo(data) {
+		const schema = Joi.object({
+			fullName: Joi.string().trim().strict().messages({
+				"string.trim":
+					"Fullname not contain whitespace at the beginning and end",
+			}),
+		});
+
+		return schema.validate(data);
 	},
 };

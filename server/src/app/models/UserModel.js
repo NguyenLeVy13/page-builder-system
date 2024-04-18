@@ -9,19 +9,6 @@ const UserSchema = new Schema({
 	roleId: { type: String, required: true },
 }, { timestamps: true });
 
-// Hash password pre save or create user
-// Dont use arrow function because it does not have context
-UserSchema.pre("save", async function (next) {
-	try {
-		const salt = await bcrypt.genSalt(10);
-		const hashPassword = await bcrypt.hash(this.password, salt);
-		this.password = hashPassword;
-		next();
-	} catch (error) {
-		next(error);
-	}
-});
-
 // Custom query
 UserSchema.query.sortable = function (req) {
 	const isSort =
@@ -79,6 +66,15 @@ UserSchema.methods.isMatchPassword = async function (password) {
 	try {
 		return await bcrypt.compare(password, this.password);
 	} catch (error) {}
+};
+UserSchema.methods.getHashPassword = async function (password) {
+	try {
+		const salt = await bcrypt.genSalt(10);
+		const hashPassword = await bcrypt.hash(password, salt);
+		return hashPassword;
+	} catch (error) {
+		return null
+	}
 };
 
 module.exports = mongoose.model("users", UserSchema);

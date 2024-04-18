@@ -176,16 +176,31 @@ class RoleController {
 			});
 
 			if (deleteResult.deletedCount > 0) {
-				res.json({
-					code: 0,
-					message: "Delete role successfully",
-				});
-			} else {
-				res.json({
-					code: 1,
-					message: "No role found to delete",
-				});
+				// Delele user of role
+				const removeRoleFromUsers = await RoleSchema.updateMany(
+					{},
+					{
+						$pull: {
+							users: {
+								role: id,
+							},
+						},
+					}
+				);
+
+				if (removeRoleFromUsers.modifiedCount > 0) {
+					res.json({
+						code: 0,
+						message: "Delete role successfully",
+					});
+					return
+				}
 			}
+
+			res.json({
+				code: 1,
+				message: "No role found to delete",
+			});
 		} catch (error) {
 			// Bắt lỗi
 			next(error);

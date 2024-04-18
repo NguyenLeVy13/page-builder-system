@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { toast } from "sonner"
+import { toast } from "sonner";
 import {
   Form,
   FormControl,
@@ -16,10 +16,14 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { login } from "@/services/userApi";
 
 const FormSchema = z.object({
-  email: z.string().email("Invalid email address.").min(1, "Please enter your email."),
-  password: z.string().min(1, "Please enter your password."),
+  email: z
+    .string()
+    .email("Invalid email address.")
+    .min(1, "Please enter your email."),
+  password: z.string().min(5, "Password must be at least 5 characters."),
 });
 
 function LoginForm() {
@@ -33,11 +37,21 @@ function LoginForm() {
     },
   });
 
-  function formSubmit(data: z.infer<typeof FormSchema>) {
-    toast.info("Login...")
-
-    document.cookie = `user-email=${data.email}`;
-    router.push("/dashboard");
+  async function formSubmit(data: z.infer<typeof FormSchema>) {
+    const res = await login(data);
+    console.log("🚀 ~ formSubmit ~ res:", res);
+    if (res.code === 0) {
+      const userDataRes = res.data;
+      if (userDataRes) {
+        toast.info("Login...");
+        document.cookie = `user-email=${userDataRes.email}`;
+        document.cookie = `user-role=${userDataRes.roleId}`;
+        document.cookie = `user-full-name=${userDataRes.fullName}`;
+        router.push("/dashboard");
+      }
+    } else {
+      toast.error(res.message);
+    }
   }
 
   return (

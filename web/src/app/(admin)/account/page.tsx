@@ -1,6 +1,5 @@
 "use client";
 
-import { EnterIcon } from "@radix-ui/react-icons";
 import { getUserInfoCookie, setUserInfoCookie } from "@/auth/user";
 
 import { Button } from "@/components/ui/button";
@@ -8,7 +7,6 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";

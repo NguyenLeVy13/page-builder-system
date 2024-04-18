@@ -39,14 +39,16 @@ function LoginForm() {
 
   async function formSubmit(data: z.infer<typeof FormSchema>) {
     const res = await login(data);
-    console.log("🚀 ~ formSubmit ~ res:", res);
     if (res.code === 0) {
       const userDataRes = res.data;
       if (userDataRes) {
         toast.info("Login...");
+
+        document.cookie = `user-id=${userDataRes._id}`;
         document.cookie = `user-email=${userDataRes.email}`;
-        document.cookie = `user-role=${userDataRes.roleId}`;
         document.cookie = `user-full-name=${userDataRes.fullName}`;
+        document.cookie = `user-role-id=${userDataRes.roleId}`;
+        
         router.push("/dashboard");
       }
     } else {

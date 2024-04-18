@@ -7,6 +7,13 @@ export type User = {
   roleId: string;
 };
 
+export type UserInfoCookie = {
+  'email': string;
+  'id': string;
+  'full-name': string;
+  'role-id': string;
+};
+
 export type UserInfoLogin = {
   email: string;
   password: string;

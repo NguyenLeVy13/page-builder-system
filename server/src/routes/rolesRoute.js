@@ -1,11 +1,11 @@
 const express = require("express");
 const router = express.Router();
-const templateController = require("../app/controllers/TemplateController");
+const roleController = require("../app/controllers/RoleController");
 
-router.get("/", templateController.getAll);
-router.get("/:id", templateController.findById);
-router.post("/", templateController.create);
-router.put("/:id", templateController.update);
-router.delete("/:id", templateController.deleteById);
+router.get("/", roleController.getAll);
+router.get("/:id", roleController.findById);
+router.post("/", roleController.create);
+router.put("/:id", roleController.update);
+router.delete("/:id", roleController.deleteById);
 
 module.exports = router;

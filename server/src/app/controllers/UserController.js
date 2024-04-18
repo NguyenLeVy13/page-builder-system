@@ -47,7 +47,7 @@ class UserController {
 			if (result) {
 				res.json({
 					code: 0,
-					data: result,
+					data: { ...result._doc, password: undefined },
 					message: "Find user successfully",
 				});
 			} else {
@@ -61,7 +61,6 @@ class UserController {
 			next(error);
 		}
 	}
-
 
 	// [POST] /users/register
 	async register(req, res, next) {
@@ -93,6 +92,10 @@ class UserController {
 
 			// create method in Schema not allowed handle prev middleware in mongoose
 			const newUser = new UserSchema(payload);
+
+			// Hash password
+			newUser.password = await newUser.getHashPassword(payload.password);
+
 			const saveUserResult = await newUser.save();
 
 			res.json({
@@ -163,7 +166,7 @@ class UserController {
 			// Lấy id từ params
 			const userId = req.params.id;
 			// Lấy password mới từ body của request
-			const newPassword = req.body.password;
+			const { newPassword } = req.body;
 
 			// Xác thực password mới
 			const { error } = userValidation.updatePassword(newPassword);
@@ -188,7 +191,9 @@ class UserController {
 			}
 
 			// Cập nhật mật khẩu mới (newPassword)
-			userFound.password = newPassword;
+			// Hash password
+			userFound.password = await userFound.getHashPassword(newPassword);
+
 			const saveUserResult = await userFound.save();
 
 			res.json({

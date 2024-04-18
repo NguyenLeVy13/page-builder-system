@@ -1,30 +1,30 @@
-const TemplateSchema = require("../models/TemplateModel");
-const { templateValidation } = require("../validation");
+const FunctionSchema = require("../models/FunctionModel");
+const { functionValidation } = require("../validation");
 
-class TemplateController {
-	// [GET] /templates
+class FunctionController {
+	// [GET] /functions
 	async getAll(req, res, next) {
 		try {
-			// Lấy danh sách template
-			const result = await TemplateSchema.find({})
+			// Lấy danh sách function
+			const result = await FunctionSchema.find({})
 				.sortable(req)
 				.searchable(req)
 				.limitable(req);
 
-			// Lấy tổng danh sách template
-			const allTemplates = await TemplateSchema.find({}).searchable(req);
+			// Lấy tổng danh sách function
+			const allRecords = await FunctionSchema.find({}).searchable(req);
 
 			if (result) {
 				res.json({
 					code: 0,
 					data: result,
-					total: allTemplates.length,
-					message: "Get all templates successfully",
+					total: allRecords.length,
+					message: "Get all function successfully",
 				});
 			} else {
 				res.json({
 					code: 1,
-					message: "No template found",
+					message: "No function found",
 				});
 			}
 		} catch (error) {
@@ -33,27 +33,27 @@ class TemplateController {
 		}
 	}
 
-	// [GET] /templates/:id
+	// [GET] /functions/:id
 	async findById(req, res, next) {
 		try {
 			// Lấy id từ params
-			const templateId = req.params.id;
+			const id = req.params.id;
 
-			// Tìm template theo id
-			const result = await TemplateSchema.findOne({
-				_id: templateId,
+			// Tìm function theo id
+			const result = await FunctionSchema.findOne({
+				_id: id,
 			});
 
 			if (result) {
 				res.json({
 					code: 0,
 					data: result,
-					message: "Find template successfully",
+					message: "Find function successfully",
 				});
 			} else {
 				res.json({
 					code: 1,
-					message: "No template found",
+					message: "No function found",
 				});
 			}
 		} catch (error) {
@@ -62,14 +62,14 @@ class TemplateController {
 		}
 	}
 
-	// [POST] /templates
+	// [POST] /functions
 	async create(req, res, next) {
 		try {
 			// Lấy dữ liệu payload từ body của request
 			const payload = { ...req.body };
 
 			// Xác thực dữ liệu payload
-			const { error } = templateValidation.updateOrCreate(payload);
+			const { error } = functionValidation.updateOrCreate(payload);
 			if (error) {
 				res.json({
 					code: 1,
@@ -78,25 +78,25 @@ class TemplateController {
 				return;
 			}
 
-			// Kiểm tra title template đã tồn tại chưa
-			const itemExisted = await TemplateSchema.findOne({
-				title: payload.title,
+			// Kiểm tra name function đã tồn tại chưa
+			const itemExisted = await FunctionSchema.findOne({
+				name: payload.name
 			});
 			if (itemExisted) {
 				res.json({
 					code: 2,
-					message: "Template title already exists",
+					message: "Name or Pathname already exists",
 				});
 				return;
 			}
 
 			// create method in Schema not allowed handle prev middleware in mongoose
-			const newTemplate = new TemplateSchema(payload);
-			const createResult = await TemplateSchema.create(newTemplate);
+			const newRecord = new FunctionSchema(payload);
+			const createResult = await FunctionSchema.create(newRecord);
 
 			res.json({
 				code: 0,
-				message: "Create template successfully",
+				message: "Create function successfully",
 			});
 		} catch (error) {
 			// Bắt lỗi
@@ -104,16 +104,16 @@ class TemplateController {
 		}
 	}
 
-	// [PUT] /templates/:id
+	// [PUT] /functions/:id
 	async update(req, res, next) {
 		try {
 			// Lấy id từ params
-			const templateId = req.params.id;
+			const id = req.params.id;
 			// Lấy dữ liệu payload từ body của request
 			const payload = { ...req.body };
 
 			// Xác thực dữ liệu payload
-			const { error } = templateValidation.updateOrCreate(payload);
+			const { error } = functionValidation.updateOrCreate(payload);
 			if (error) {
 				res.json({
 					code: 2,
@@ -122,27 +122,27 @@ class TemplateController {
 				return;
 			}
 
-			// Kiểm tra title template đã tồn tại chưa
-			const itemExisted = await TemplateSchema.findOne({
+			// Kiểm tra name | pathname function đã tồn tại chưa
+			const itemExisted = await FunctionSchema.findOne({
 				_id: {
 					$not: {
-						$eq: templateId,
+						$eq: id,
 					}
 				},
-				title: payload.title,
+				name: payload.name
 			});
 			if (itemExisted) {
 				res.json({
 					code: 2,
-					message: "Template title already exists",
+					message: "Menu name or pathname already exists",
 				});
 				return;
 			}
 
 			// Cập nhật dữ liệu mới theo id
-			const updateResult = await TemplateSchema.updateOne(
+			const updateResult = await FunctionSchema.updateOne(
 				{
-					_id: templateId,
+					_id: id,
 				},
 				payload
 			);
@@ -150,12 +150,12 @@ class TemplateController {
 			if (updateResult.modifiedCount > 0) {
 				res.json({
 					code: 0,
-					message: "Update template successfully",
+					message: "Update function successfully",
 				});
 			} else {
 				res.json({
 					code: 1,
-					message: "No template found to update",
+					message: "No function found to update",
 				});
 			}
 		} catch (error) {
@@ -164,26 +164,26 @@ class TemplateController {
 		}
 	}
 
-	// [DELETE] /templates/:id
+	// [DELETE] /functions/:id
 	async deleteById(req, res, next) {
 		try {
 			// Lấy id từ params
-			const templateId = req.params.id;
+			const id = req.params.id;
 
-			// Xóa template trong CSDL
-			const deleteResult = await TemplateSchema.deleteOne({
-				_id: templateId,
+			// Xóa function trong CSDL
+			const deleteResult = await FunctionSchema.deleteOne({
+				_id: id,
 			});
 
 			if (deleteResult.deletedCount > 0) {
 				res.json({
 					code: 0,
-					message: "Delete template successfully",
+					message: "Delete function successfully",
 				});
 			} else {
 				res.json({
 					code: 1,
-					message: "No template found to delete",
+					message: "No function found to delete",
 				});
 			}
 		} catch (error) {
@@ -193,4 +193,4 @@ class TemplateController {
 	}
 }
 
-module.exports = new TemplateController();
+module.exports = new FunctionController();

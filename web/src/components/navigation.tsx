@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -7,13 +7,26 @@ import { Menu, Package2 } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 
-const menuItems: { name: string; path: string }[] = [
-  { name: "Dashboard", path: "/dashboard" },
-  { name: "Templates", path: "/templates" },
-  { name: "Blocks", path: "/blocks" },
-  { name: "Builder", path: "/builder" },
-  { name: "Roles", path: "/roles" },
-  { name: "Users", path: "/users" },
+import {
+  DesktopIcon,
+  StackIcon,
+  TokensIcon,
+  ComponentBooleanIcon,
+  LightningBoltIcon,
+  MixIcon,
+  MagicWandIcon,
+  PersonIcon,
+} from "@radix-ui/react-icons";
+
+const menuItems: { name: string; path: string; icon: any }[] = [
+  { name: "Dashboard", path: "/dashboard", icon: <DesktopIcon /> },
+  { name: "Templates", path: "/templates", icon: <StackIcon /> },
+  { name: "Blocks", path: "/blocks", icon: <TokensIcon /> },
+  { name: "Builder", path: "/builder", icon: <ComponentBooleanIcon /> },
+  { name: "Roles", path: "/roles", icon: <LightningBoltIcon /> },
+  { name: "Menu", path: "/menu", icon: <MixIcon /> },
+  { name: "Functions", path: "/functions", icon: <MagicWandIcon /> },
+  { name: "Users", path: "/users", icon: <PersonIcon /> },
 ];
 
 function Navigation() {
@@ -33,10 +46,11 @@ function Navigation() {
           <Link
             key={i.path}
             href={i.path}
-            className={`transition-colors hover:text-foreground ${
+            className={`transition-colors hover:text-foreground flex items-center ${
               pathname === i.path ? "text-foreground" : "text-muted-foreground"
             }`}
           >
+            <span className="me-1">{i.icon}</span>
             {i.name}
           </Link>
         ))}
@@ -57,33 +71,19 @@ function Navigation() {
               <Package2 className="h-6 w-6" />
               <span className="sr-only">Acme Inc</span>
             </Link>
-            <Link href="#" className="hover:text-foreground">
-              Dashboard
-            </Link>
-            <Link
-              href="#"
-              className="text-muted-foreground hover:text-foreground"
-            >
-              Orders
-            </Link>
-            <Link
-              href="#"
-              className="text-muted-foreground hover:text-foreground"
-            >
-              Products
-            </Link>
-            <Link
-              href="#"
-              className="text-muted-foreground hover:text-foreground"
-            >
-              Customers
-            </Link>
-            <Link
-              href="#"
-              className="text-muted-foreground hover:text-foreground"
-            >
-              Analytics
-            </Link>
+            {menuItems.map((i) => (
+              <Link
+                key={i.path}
+                href={i.path}
+                className={`transition-colors hover:text-foreground ${
+                  pathname === i.path
+                    ? "text-foreground"
+                    : "text-muted-foreground"
+                }`}
+              >
+                {i.name}
+              </Link>
+            ))}
           </nav>
         </SheetContent>
       </Sheet>

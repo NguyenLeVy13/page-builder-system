@@ -1,30 +1,30 @@
-const RoleSchema = require("../models/RoleModel");
-const { roleValidation } = require("../validation");
+const FunctionSchema = require("../models/FunctionModel");
+const { functionValidation } = require("../validation");
 
-class RoleController {
-	// [GET] /roles
+class FunctionController {
+	// [GET] /functions
 	async getAll(req, res, next) {
 		try {
-			// Lấy danh sách role
-			const result = await RoleSchema.find({})
+			// Lấy danh sách function
+			const result = await FunctionSchema.find({})
 				.sortable(req)
 				.searchable(req)
 				.limitable(req);
 
-			// Lấy tổng danh sách role
-			const allRecords = await RoleSchema.find({}).searchable(req);
+			// Lấy tổng danh sách function
+			const allRecords = await FunctionSchema.find({}).searchable(req);
 
 			if (result) {
 				res.json({
 					code: 0,
 					data: result,
 					total: allRecords.length,
-					message: "Get all roles successfully",
+					message: "Get all function successfully",
 				});
 			} else {
 				res.json({
 					code: 1,
-					message: "No role found",
+					message: "No function found",
 				});
 			}
 		} catch (error) {
@@ -33,14 +33,14 @@ class RoleController {
 		}
 	}
 
-	// [GET] /roles/:id
+	// [GET] /functions/:id
 	async findById(req, res, next) {
 		try {
 			// Lấy id từ params
 			const id = req.params.id;
 
-			// Tìm role theo id
-			const result = await RoleSchema.findOne({
+			// Tìm function theo id
+			const result = await FunctionSchema.findOne({
 				_id: id,
 			});
 
@@ -48,12 +48,12 @@ class RoleController {
 				res.json({
 					code: 0,
 					data: result,
-					message: "Find role successfully",
+					message: "Find function successfully",
 				});
 			} else {
 				res.json({
 					code: 1,
-					message: "No role found",
+					message: "No function found",
 				});
 			}
 		} catch (error) {
@@ -62,14 +62,14 @@ class RoleController {
 		}
 	}
 
-	// [POST] /roles
+	// [POST] /functions
 	async create(req, res, next) {
 		try {
 			// Lấy dữ liệu payload từ body của request
 			const payload = { ...req.body };
 
 			// Xác thực dữ liệu payload
-			const { error } = roleValidation.updateOrCreate(payload);
+			const { error } = functionValidation.updateOrCreate(payload);
 			if (error) {
 				res.json({
 					code: 1,
@@ -78,25 +78,25 @@ class RoleController {
 				return;
 			}
 
-			// Kiểm tra name role đã tồn tại chưa
-			const itemExisted = await RoleSchema.findOne({
-				name: payload.name,
+			// Kiểm tra name function đã tồn tại chưa
+			const itemExisted = await FunctionSchema.findOne({
+				name: payload.name
 			});
 			if (itemExisted) {
 				res.json({
 					code: 2,
-					message: "Role name already exists",
+					message: "Name or Pathname already exists",
 				});
 				return;
 			}
 
 			// create method in Schema not allowed handle prev middleware in mongoose
-			const newRecord = new RoleSchema(payload);
-			const createResult = await RoleSchema.create(newRecord);
+			const newRecord = new FunctionSchema(payload);
+			const createResult = await FunctionSchema.create(newRecord);
 
 			res.json({
 				code: 0,
-				message: "Create role successfully",
+				message: "Create function successfully",
 			});
 		} catch (error) {
 			// Bắt lỗi
@@ -104,7 +104,7 @@ class RoleController {
 		}
 	}
 
-	// [PUT] /roles/:id
+	// [PUT] /functions/:id
 	async update(req, res, next) {
 		try {
 			// Lấy id từ params
@@ -113,7 +113,7 @@ class RoleController {
 			const payload = { ...req.body };
 
 			// Xác thực dữ liệu payload
-			const { error } = roleValidation.updateOrCreate(payload);
+			const { error } = functionValidation.updateOrCreate(payload);
 			if (error) {
 				res.json({
 					code: 2,
@@ -122,25 +122,25 @@ class RoleController {
 				return;
 			}
 
-			// Kiểm tra name role đã tồn tại chưa
-			const itemExisted = await RoleSchema.findOne({
+			// Kiểm tra name | pathname function đã tồn tại chưa
+			const itemExisted = await FunctionSchema.findOne({
 				_id: {
 					$not: {
 						$eq: id,
 					}
 				},
-				name: payload.name,
+				name: payload.name
 			});
 			if (itemExisted) {
 				res.json({
 					code: 2,
-					message: "Role name already exists",
+					message: "Menu name or pathname already exists",
 				});
 				return;
 			}
 
 			// Cập nhật dữ liệu mới theo id
-			const updateResult = await RoleSchema.updateOne(
+			const updateResult = await FunctionSchema.updateOne(
 				{
 					_id: id,
 				},
@@ -150,12 +150,12 @@ class RoleController {
 			if (updateResult.modifiedCount > 0) {
 				res.json({
 					code: 0,
-					message: "Update role successfully",
+					message: "Update function successfully",
 				});
 			} else {
 				res.json({
 					code: 1,
-					message: "No role found to update",
+					message: "No function found to update",
 				});
 			}
 		} catch (error) {
@@ -164,26 +164,26 @@ class RoleController {
 		}
 	}
 
-	// [DELETE] /roles/:id
+	// [DELETE] /functions/:id
 	async deleteById(req, res, next) {
 		try {
 			// Lấy id từ params
 			const id = req.params.id;
 
-			// Xóa role trong CSDL
-			const deleteResult = await RoleSchema.deleteOne({
+			// Xóa function trong CSDL
+			const deleteResult = await FunctionSchema.deleteOne({
 				_id: id,
 			});
 
 			if (deleteResult.deletedCount > 0) {
 				res.json({
 					code: 0,
-					message: "Delete role successfully",
+					message: "Delete function successfully",
 				});
 			} else {
 				res.json({
 					code: 1,
-					message: "No role found to delete",
+					message: "No function found to delete",
 				});
 			}
 		} catch (error) {
@@ -193,4 +193,4 @@ class RoleController {
 	}
 }
 
-module.exports = new RoleController();
+module.exports = new FunctionController();

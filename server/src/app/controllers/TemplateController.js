@@ -139,7 +139,7 @@ class TemplateController {
 				return;
 			}
 
-			// Cập nhật dữ liệu mới cho movie type theo id
+			// Cập nhật dữ liệu mới theo id
 			const updateResult = await TemplateSchema.updateOne(
 				{
 					_id: templateId,

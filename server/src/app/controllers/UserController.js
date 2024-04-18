@@ -149,6 +149,15 @@ class UserController {
 				return;
 			}
 
+			// Check role
+			if (!userExist.roleId) {
+				res.json({
+					code: 4,
+					message: `This account has no role`,
+				});
+				return;
+			}
+
 			res.json({
 				code: 0,
 				data: { ...userExist._doc, password: undefined },

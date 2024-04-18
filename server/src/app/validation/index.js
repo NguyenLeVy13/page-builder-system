@@ -3,6 +3,7 @@ const roleValidation = require('./roleValidation')
 const menuValidation = require('./menuValidation')
 const functionValidation = require('./functionValidation')
 const roleFunctionValidation = require('./roleFunctionValidation')
+const userValidation = require('./userValidation')
 
 module.exports = {
 	templateValidation,
@@ -10,4 +11,5 @@ module.exports = {
 	menuValidation,
 	functionValidation,
 	roleFunctionValidation,
+	userValidation,
 }

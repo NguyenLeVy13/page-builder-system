@@ -73,7 +73,7 @@ class UserController {
 			const { error } = userValidation.register(payload);
 			if (error) {
 				res.json({
-					code: 2,
+					code: 1,
 					message: error.message,
 				});
 				return;
@@ -85,7 +85,7 @@ class UserController {
 			});
 			if (userExist) {
 				res.json({
-					code: 3,
+					code: 2,
 					message: "Email already exists",
 				});
 				return;
@@ -96,7 +96,7 @@ class UserController {
 			const saveUserResult = await newUser.save();
 
 			res.json({
-				code: 1,
+				code: 0,
 				data: { ...saveUserResult._doc, password: undefined },
 				message: "Register successfully",
 			});
@@ -116,7 +116,7 @@ class UserController {
 			const { error } = userValidation.login(payload);
 			if (error) {
 				res.json({
-					code: 2,
+					code: 1,
 					message: error.message,
 				});
 				return;
@@ -128,7 +128,7 @@ class UserController {
 			});
 			if (!userExist) {
 				res.json({
-					code: 3,
+					code: 2,
 					message: `Not found email: ${payload.email}`,
 				});
 				return;
@@ -140,14 +140,14 @@ class UserController {
 			);
 			if (!isMatchPassword) {
 				res.json({
-					code: 4,
+					code: 3,
 					message: `Incorrect password for email: ${payload.email}`,
 				});
 				return;
 			}
 
 			res.json({
-				code: 1,
+				code: 0,
 				data: { ...userExist._doc, password: undefined },
 				message: "Login successfully",
 			});
@@ -169,7 +169,7 @@ class UserController {
 			const { error } = userValidation.updatePassword(newPassword);
 			if (error) {
 				res.json({
-					code: 4,
+					code: 1,
 					message: error.message,
 				});
 				return;
@@ -181,7 +181,7 @@ class UserController {
 			});
 			if (!userFound) {
 				res.json({
-					code: 5,
+					code: 2,
 					message: "No user found to update password",
 				});
 				return;
@@ -192,7 +192,7 @@ class UserController {
 			const saveUserResult = await userFound.save();
 
 			res.json({
-				code: 1,
+				code: 0,
 				message: "Update password successfully",
 			});
 		} catch (error) {
@@ -213,7 +213,7 @@ class UserController {
 			const { error } = userValidation.updateRole(newRoleId);
 			if (error) {
 				res.json({
-					code: 4,
+					code: 1,
 					message: error.message,
 				});
 				return;
@@ -225,7 +225,7 @@ class UserController {
 			});
 			if (!userFound) {
 				res.json({
-					code: 5,
+					code: 2,
 					message: "No user found to update role",
 				});
 				return;
@@ -236,8 +236,54 @@ class UserController {
 			const saveUserResult = await userFound.save();
 
 			res.json({
-				code: 1,
+				code: 0,
 				message: "Update role successfully",
+			});
+		} catch (error) {
+			// Bắt lỗi
+			next(error);
+		}
+	}
+
+	// [PUT] /users/:id/updateInfoById
+	async updateInfoById(req, res, next) {
+		try {
+			// Lấy id từ params
+			const userId = req.params.id;
+			// Lấy dữ liệu payload từ body của request
+			const payload = req.body;
+
+			// Xác thực payload
+			const { error } = userValidation.updateInfo(payload);
+			if (error) {
+				res.json({
+					code: 1,
+					message: error.message,
+				});
+				return;
+			}
+
+			// Tìm tài khoản người dùng để cập nhật info mới
+			const userFound = await UserSchema.findOne({
+				_id: userId,
+			});
+			if (!userFound) {
+				res.json({
+					code: 2,
+					message: "No user found to update info",
+				});
+				return;
+			}
+
+			// Cập nhật info mới
+			if (payload.fullName) {
+				userFound.fullName = payload.fullName;
+			}
+			const saveUserResult = await userFound.save();
+
+			res.json({
+				code: 0,
+				message: "Update info successfully",
 			});
 		} catch (error) {
 			// Bắt lỗi

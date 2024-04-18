@@ -10,8 +10,11 @@ import { useParams } from "next/navigation";
 import { findTemplate } from "@/services/templateApi";
 import { toast } from "sonner";
 
-// Render Puck editor
 function EditTemplateBuilder() {
+  // Force re-render
+  const key = Math.random().toString(36).substring(7);
+
+  // Use hooks
   const params = useParams();
 
   const [template, setTemplate] = useState<Template>({
@@ -71,7 +74,7 @@ function EditTemplateBuilder() {
 
   return (
     <div className={styles.container}>
-      <Puck config={puckConfig} data={templateData} onPublish={handleOpenPublishDialog} />
+      <Puck key={key} config={puckConfig} data={templateData!} onPublish={handleOpenPublishDialog} />
     </div>
   );
 }

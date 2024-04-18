@@ -201,6 +201,50 @@ class UserController {
 		}
 	}
 
+	// [PUT] /users/:id/updateRoleById
+	async updateRoleById(req, res, next) {
+		try {
+			// Lấy id từ params
+			const userId = req.params.id;
+			// Lấy newRoleId mới từ body của request
+			const { newRoleId } = req.body;
+
+			// Xác thực role ID
+			const { error } = userValidation.updateRole(newRoleId);
+			if (error) {
+				res.json({
+					code: 4,
+					message: error.message,
+				});
+				return;
+			}
+
+			// Tìm tài khoản người dùng để cập nhật role mới (newRoleId)
+			const userFound = await UserSchema.findOne({
+				_id: userId,
+			});
+			if (!userFound) {
+				res.json({
+					code: 5,
+					message: "No user found to update role",
+				});
+				return;
+			}
+
+			// Cập nhật role ID mới (newRoleId)
+			userFound.roleId = newRoleId;
+			const saveUserResult = await userFound.save();
+
+			res.json({
+				code: 1,
+				message: "Update role successfully",
+			});
+		} catch (error) {
+			// Bắt lỗi
+			next(error);
+		}
+	}
+
 	// [DELETE] /users/:id
 	async deleteById(req, res, next) {
 		try {

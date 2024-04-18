@@ -30,6 +30,11 @@ module.exports = {
 					"string.empty": "Password must not be empty",
 					"string.min": "Password must contain at least 5 characters",
 				}),
+			fullName: Joi.string().trim().strict().messages({
+				"string.trim":
+					"Fullname not contain whitespace at the beginning and end",
+				"string.min": "Full name must contain at least 5 characters",
+			}),
 		});
 
 		return schema.validate(data);
@@ -64,6 +69,11 @@ module.exports = {
 					"string.empty": "Password must not be empty",
 					"string.min": "Password must contain at least 5 characters",
 				}),
+			fullName: Joi.string().trim().strict().messages({
+				"string.trim":
+					"Fullname not contain whitespace at the beginning and end",
+				"string.min": "Full name must contain at least 5 characters",
+			}),
 		});
 
 		return schema.validate(data);
@@ -86,5 +96,22 @@ module.exports = {
 			});
 
 		return schema.validate(password);
+	},
+
+	// Xác thực role ID khi cập nhật role
+	updateRole(roleId) {
+		const schema = Joi.string()
+			.trim()
+			.required()
+			.empty()
+			.strict()
+			.messages({
+				"string.trim":
+					"Role ID not contain whitespace at the beginning and end",
+				"any.required": "Role ID is required",
+				"string.empty": "Role ID must not be empty",
+			});
+
+		return schema.validate(roleId);
 	},
 };

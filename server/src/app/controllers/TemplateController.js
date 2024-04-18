@@ -124,8 +124,10 @@ class TemplateController {
 
 			// Kiểm tra title template đã tồn tại chưa
 			const itemExisted = await TemplateSchema.findOne({
-				$not: {
-					_id: templateId,
+				_id: {
+					$not: {
+						$eq: templateId,
+					}
 				},
 				title: payload.title,
 			});

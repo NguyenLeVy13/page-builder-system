@@ -1,3 +1,13 @@
+export type TemplateData = {
+  content: any;
+  root: {
+    props: {
+      title: string
+    }
+  };
+  zones: any;
+}
+
 export type Template = {
   _id?: string;
   createdAt?: string;
@@ -21,6 +31,16 @@ export type TemplateResponse = {
 };
 
 export type TemplateCreatedResponse = {
+  code: number;
+  message: string,
+};
+
+export type TemplateUpdatedResponse = {
+  code: number;
+  message: string,
+};
+
+export type TemplateDeletedResponse = {
   code: number;
   message: string,
 };

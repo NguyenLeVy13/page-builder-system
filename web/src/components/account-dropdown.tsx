@@ -12,14 +12,20 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { deleteLoggedInCookie } from "@/auth/user";
+import { deleteLoggedInCookie, getUserInfoCookie } from "@/auth/user";
+import { useMemo } from "react";
 
 function AccountDropdown() {
   const router = useRouter();
+  const userInfoCookie = useMemo(() => getUserInfoCookie(), []);
 
   function handleLogout() {
     deleteLoggedInCookie();
     router.push("/login");
+  }
+
+  function handleRedirectToAccountPage() {
+    router.push("/account");
   }
 
   return (
@@ -31,12 +37,10 @@ function AccountDropdown() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <DropdownMenuLabel>My Account</DropdownMenuLabel>
+        <DropdownMenuLabel>{userInfoCookie['full-name']}</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>Settings</DropdownMenuItem>
-        <DropdownMenuItem>Support</DropdownMenuItem>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={handleLogout}>Logout</DropdownMenuItem>
+        <DropdownMenuItem className="cursor-pointer" onClick={handleRedirectToAccountPage}>Account</DropdownMenuItem>
+        <DropdownMenuItem className="cursor-pointer" onClick={handleLogout}>Logout</DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );

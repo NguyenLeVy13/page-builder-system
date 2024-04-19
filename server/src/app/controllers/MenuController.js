@@ -1,30 +1,30 @@
-const TemplateSchema = require("../models/TemplateModel");
-const { templateValidation } = require("../validation");
+const MenuSchema = require("../models/MenuModel");
+const { menuValidation } = require("../validation");
 
-class TemplateController {
-	// [GET] /templates
+class MenuController {
+	// [GET] /menu
 	async getAll(req, res, next) {
 		try {
-			// Lấy danh sách template
-			const result = await TemplateSchema.find({})
+			// Lấy danh sách menu
+			const result = await MenuSchema.find({})
 				.sortable(req)
 				.searchable(req)
 				.limitable(req);
 
-			// Lấy tổng danh sách template
-			const allTemplates = await TemplateSchema.find({}).searchable(req);
+			// Lấy tổng danh sách menu
+			const allRecords = await MenuSchema.find({}).searchable(req);
 
 			if (result) {
 				res.json({
 					code: 0,
 					data: result,
-					total: allTemplates.length,
-					message: "Get all templates successfully",
+					total: allRecords.length,
+					message: "Get all menu successfully",
 				});
 			} else {
 				res.json({
 					code: 1,
-					message: "No template found",
+					message: "No menu found",
 				});
 			}
 		} catch (error) {
@@ -33,27 +33,27 @@ class TemplateController {
 		}
 	}
 
-	// [GET] /templates/:id
+	// [GET] /menu/:id
 	async findById(req, res, next) {
 		try {
 			// Lấy id từ params
-			const templateId = req.params.id;
+			const id = req.params.id;
 
-			// Tìm template theo id
-			const result = await TemplateSchema.findOne({
-				_id: templateId,
+			// Tìm menu theo id
+			const result = await MenuSchema.findOne({
+				_id: id,
 			});
 
 			if (result) {
 				res.json({
 					code: 0,
 					data: result,
-					message: "Find template successfully",
+					message: "Find menu successfully",
 				});
 			} else {
 				res.json({
 					code: 1,
-					message: "No template found",
+					message: "No menu found",
 				});
 			}
 		} catch (error) {
@@ -62,14 +62,14 @@ class TemplateController {
 		}
 	}
 
-	// [POST] /templates
+	// [POST] /menu
 	async create(req, res, next) {
 		try {
 			// Lấy dữ liệu payload từ body của request
 			const payload = { ...req.body };
 
 			// Xác thực dữ liệu payload
-			const { error } = templateValidation.updateOrCreate(payload);
+			const { error } = menuValidation.updateOrCreate(payload);
 			if (error) {
 				res.json({
 					code: 1,
@@ -78,25 +78,25 @@ class TemplateController {
 				return;
 			}
 
-			// Kiểm tra title template đã tồn tại chưa
-			const itemExisted = await TemplateSchema.findOne({
-				title: payload.title,
+			// Kiểm tra name menu đã tồn tại chưa
+			const itemExisted = await MenuSchema.findOne({
+				$or: [{ name: payload.name }, { pathname: payload.pathname }]
 			});
 			if (itemExisted) {
 				res.json({
 					code: 2,
-					message: "Template title already exists",
+					message: "Name or Pathname already exists",
 				});
 				return;
 			}
 
 			// create method in Schema not allowed handle prev middleware in mongoose
-			const newTemplate = new TemplateSchema(payload);
-			const createResult = await TemplateSchema.create(newTemplate);
+			const newRecord = new MenuSchema(payload);
+			const createResult = await MenuSchema.create(newRecord);
 
 			res.json({
 				code: 0,
-				message: "Create template successfully",
+				message: "Create menu successfully",
 			});
 		} catch (error) {
 			// Bắt lỗi
@@ -104,16 +104,16 @@ class TemplateController {
 		}
 	}
 
-	// [PUT] /templates/:id
+	// [PUT] /menu/:id
 	async update(req, res, next) {
 		try {
 			// Lấy id từ params
-			const templateId = req.params.id;
+			const id = req.params.id;
 			// Lấy dữ liệu payload từ body của request
 			const payload = { ...req.body };
 
 			// Xác thực dữ liệu payload
-			const { error } = templateValidation.updateOrCreate(payload);
+			const { error } = menuValidation.updateOrCreate(payload);
 			if (error) {
 				res.json({
 					code: 2,
@@ -122,27 +122,27 @@ class TemplateController {
 				return;
 			}
 
-			// Kiểm tra title template đã tồn tại chưa
-			const itemExisted = await TemplateSchema.findOne({
+			// Kiểm tra name | pathname menu đã tồn tại chưa
+			const itemExisted = await MenuSchema.findOne({
 				_id: {
 					$not: {
-						$eq: templateId,
+						$eq: id,
 					}
 				},
-				title: payload.title,
+				$or: [{ name: payload.name }, { pathname: payload.pathname }],
 			});
 			if (itemExisted) {
 				res.json({
 					code: 2,
-					message: "Template title already exists",
+					message: "Menu name or pathname already exists",
 				});
 				return;
 			}
 
 			// Cập nhật dữ liệu mới theo id
-			const updateResult = await TemplateSchema.updateOne(
+			const updateResult = await MenuSchema.updateOne(
 				{
-					_id: templateId,
+					_id: id,
 				},
 				payload
 			);
@@ -150,12 +150,12 @@ class TemplateController {
 			if (updateResult.modifiedCount > 0) {
 				res.json({
 					code: 0,
-					message: "Update template successfully",
+					message: "Update menu successfully",
 				});
 			} else {
 				res.json({
 					code: 1,
-					message: "No template found to update",
+					message: "No menu found to update",
 				});
 			}
 		} catch (error) {
@@ -164,26 +164,26 @@ class TemplateController {
 		}
 	}
 
-	// [DELETE] /templates/:id
+	// [DELETE] /menu/:id
 	async deleteById(req, res, next) {
 		try {
 			// Lấy id từ params
-			const templateId = req.params.id;
+			const id = req.params.id;
 
-			// Xóa template trong CSDL
-			const deleteResult = await TemplateSchema.deleteOne({
-				_id: templateId,
+			// Xóa menu trong CSDL
+			const deleteResult = await MenuSchema.deleteOne({
+				_id: id,
 			});
 
 			if (deleteResult.deletedCount > 0) {
 				res.json({
 					code: 0,
-					message: "Delete template successfully",
+					message: "Delete menu successfully",
 				});
 			} else {
 				res.json({
 					code: 1,
-					message: "No template found to delete",
+					message: "No menu found to delete",
 				});
 			}
 		} catch (error) {
@@ -193,4 +193,4 @@ class TemplateController {
 	}
 }
 
-module.exports = new TemplateController();
+module.exports = new MenuController();

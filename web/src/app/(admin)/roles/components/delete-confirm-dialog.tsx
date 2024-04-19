@@ -14,21 +14,21 @@ import {
 } from "@/components/ui/alert-dialog";
 
 type Props = {
-  onConfirm: () => void;
+  onReload: () => void;
 };
 
 type DeleteConfirmDialogRef = {
   open: (roleId: string) => void;
 };
 
-function DeleteConfirmDialog({ onConfirm = () => {} }: Props, ref: any) {
+function DeleteConfirmDialog({ onReload = () => {} }: Props, ref: any) {
   const [isOpen, setIsOpen] = useState(false);
   const [roleId, setRoleId] = useState("");
 
   async function handleConfirm() {
     await deleteRole(roleId);
     setIsOpen(false);
-    onConfirm();
+    onReload();
   }
 
   useImperativeHandle(

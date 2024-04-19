@@ -95,7 +95,7 @@ function TemplateTable(
           );
         },
         cell: ({ row }) => (
-          <div className="lowercase">{row.getValue("title")}</div>
+          <div>{row.getValue("title")}</div>
         ),
       },
       {

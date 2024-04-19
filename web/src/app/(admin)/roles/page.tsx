@@ -15,9 +15,13 @@ import DeleteConfirmDialog from "./components/delete-confirm-dialog";
 
 //? APIS
 import { getRoleList } from "@/services/roleApi";
+import CreateOrUpdateDialog, {
+  CreateOrUpdateDialogRef,
+} from "./components/create-or-update-dialog";
 
 function Roles() {
   const deleteConfirmDialogRef = useRef<DeleteConfirmDialogRef>(null);
+  const createOrUpdateDialogRef = useRef<CreateOrUpdateDialogRef>(null);
 
   const [roleList, setRoleList] = useState<Role[]>([]);
 
@@ -34,8 +38,8 @@ function Roles() {
     }
   }
 
-  function handleEdit(id: string) {
-
+  function handleEdit(role: Role) {
+    createOrUpdateDialogRef.current?.open(role);
   }
 
   function handleDelete(id: string) {
@@ -43,11 +47,12 @@ function Roles() {
     deleteConfirmDialogRef.current.open(id);
   }
 
-  function handleConfirmDelete() {
-    fetchDataList();
+  function handleOpenCreateOrUpdateDialog() {
+    createOrUpdateDialogRef.current?.open();
   }
 
-  function handleOpenCreateOrUpdateDialog() {
+  function handleReload() {
+    fetchDataList();
   }
 
   return (
@@ -57,7 +62,10 @@ function Roles() {
           <div className="flex justify-between">
             <CardTitle>Template list</CardTitle>
             <div>
-              <Button className="me-2" onClick={() => handleOpenCreateOrUpdateDialog()}>
+              <Button
+                className="me-2"
+                onClick={() => handleOpenCreateOrUpdateDialog()}
+              >
                 <PlusIcon className="mr-2 h-4 w-4" />
                 New role
               </Button>
@@ -74,9 +82,14 @@ function Roles() {
         </CardContent>
       </Card>
 
+      <CreateOrUpdateDialog
+        ref={createOrUpdateDialogRef}
+        onReload={handleReload}
+      />
+
       <DeleteConfirmDialog
         ref={deleteConfirmDialogRef}
-        onConfirm={handleConfirmDelete}
+        onReload={handleReload}
       />
     </div>
   );

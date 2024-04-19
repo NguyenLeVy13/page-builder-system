@@ -45,13 +45,13 @@ import { Role } from "@/types/role";
 
 type Props = {
   data: Role[];
-  onEdit: (roleId: string) => void;
+  onEdit: (role: Role) => void;
   onDelete: (roleId: string) => void;
 };
 
 function RoleTable({
   data = [],
-  onEdit = (roleId: string) => {},
+  onEdit = (role: Role) => {},
   onDelete = (roleId: string) => {},
 }: Props) {
   const columns: ColumnDef<Role>[] = useMemo(() => {
@@ -96,7 +96,7 @@ function RoleTable({
           );
         },
         cell: ({ row }) => (
-          <div className="lowercase">{row.getValue("name")}</div>
+          <div>{row.getValue("name")}</div>
         ),
       },
       {
@@ -121,9 +121,8 @@ function RoleTable({
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <DropdownMenuItem
-                  asChild
                   className="cursor-pointer"
-                  onClick={() => onEdit(roleId!)}
+                  onClick={() => onEdit(row.original)}
                 >
                   Edit
                 </DropdownMenuItem>

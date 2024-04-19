@@ -67,6 +67,7 @@ class RoleController {
 		try {
 			// Lấy dữ liệu payload từ body của request
 			const payload = { ...req.body };
+			console.log("🚀 ~ RoleController ~ create ~ payload:", payload)
 
 			// Xác thực dữ liệu payload
 			const { error } = roleValidation.updateOrCreate(payload);

@@ -22,7 +22,7 @@ const menuItems: { name: string; path: string; icon: any }[] = [
   { name: "Dashboard", path: "/dashboard", icon: <DesktopIcon /> },
   { name: "Templates", path: "/templates", icon: <StackIcon /> },
   { name: "Blocks", path: "/blocks", icon: <TokensIcon /> },
-  { name: "Builder", path: "/builder", icon: <ComponentBooleanIcon /> },
+  { name: "Builder", path: "/builder/new/blank", icon: <ComponentBooleanIcon /> },
   { name: "Roles", path: "/roles", icon: <LightningBoltIcon /> },
   { name: "Menu", path: "/menu", icon: <MixIcon /> },
   { name: "Functions", path: "/functions", icon: <MagicWandIcon /> },

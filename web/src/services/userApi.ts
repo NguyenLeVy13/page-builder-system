@@ -8,7 +8,7 @@ import {
   UserResponse,
   UserUpdateInfoRequest,
   UserUpdatePasswordRequest,
-  UserUpdateResponse,
+  UserUpdatedResponse,
   UserUpdateRoleRequest,
 } from "@/types/user";
 import axiosClient from "./axiosClient";
@@ -40,7 +40,7 @@ export function login(data: UserInfoLogin): Promise<UserLoginResponse> {
 export function updatePasswordById(
   id: string,
   data: UserUpdatePasswordRequest
-): Promise<UserUpdateResponse> {
+): Promise<UserUpdatedResponse> {
   const url = `${group}/${id}/updatePasswordById`;
   return axiosClient.put(url, data);
 }
@@ -48,7 +48,7 @@ export function updatePasswordById(
 export function updateRoleById(
   id: string,
   data: UserUpdateRoleRequest
-): Promise<UserUpdateResponse> {
+): Promise<UserUpdatedResponse> {
   const url = `${group}/${id}/updateRoleById`;
   return axiosClient.put(url, data);
 }
@@ -56,7 +56,7 @@ export function updateRoleById(
 export function updateInfoById(
   id: string,
   data: UserUpdateInfoRequest
-): Promise<UserUpdateResponse> {
+): Promise<UserUpdatedResponse> {
   const url = `${group}/${id}/updateInfoById`;
   return axiosClient.put(url, data);
 }

@@ -1,4 +1,4 @@
-export type Function = {
+export type FuncType = {
   _id?: string;
   createdAt?: string;
   updatedAt?: string;
@@ -7,7 +7,7 @@ export type Function = {
 
 export type FunctionListResponse = {
   code: number;
-  data: Function[];
+  data: FuncType[];
   message: string,
   total: number;
 };
@@ -19,7 +19,7 @@ export type FunctionCreatedResponse = {
 
 export type FunctionResponse = {
   code: number;
-  data: Function;
+  data: FuncType;
   message: string,
   total: number;
 };

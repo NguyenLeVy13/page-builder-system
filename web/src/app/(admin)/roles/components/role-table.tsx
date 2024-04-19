@@ -45,12 +45,14 @@ import { Role } from "@/types/role";
 
 type Props = {
   data: Role[];
+  onPermission: (role: Role) => void;
   onEdit: (role: Role) => void;
   onDelete: (roleId: string) => void;
 };
 
 function RoleTable({
   data = [],
+  onPermission = (role: Role) => {},
   onEdit = (role: Role) => {},
   onDelete = (roleId: string) => {},
 }: Props) {
@@ -122,6 +124,12 @@ function RoleTable({
               <DropdownMenuContent align="end">
                 <DropdownMenuItem
                   className="cursor-pointer"
+                  onClick={() => onPermission(row.original)}
+                >
+                  Permission
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  className="cursor-pointer"
                   onClick={() => onEdit(row.original)}
                 >
                   Edit
@@ -138,7 +146,7 @@ function RoleTable({
         },
       },
     ];
-  }, [onEdit, onDelete]);
+  }, [onEdit, onDelete, onPermission]);
 
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);

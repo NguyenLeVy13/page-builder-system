@@ -100,8 +100,6 @@ function CreateOrUpdateDialog({ onReload }: Props, ref: any) {
     ref,
     () => ({
       open: (role?: Role) => {
-        console.log(role);
-        
         // If roleId is empty, it means create new role
         setDialogType(role?._id ? "update" : "create");
         roleIdValue.current = role?._id || "";

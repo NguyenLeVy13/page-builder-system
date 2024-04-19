@@ -12,16 +12,18 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import RoleTable from "./components/role-table";
 import DeleteConfirmDialog from "./components/delete-confirm-dialog";
-
-//? APIS
-import { getRoleList } from "@/services/roleApi";
 import CreateOrUpdateDialog, {
   CreateOrUpdateDialogRef,
 } from "./components/create-or-update-dialog";
 
+import { getRoleList } from "@/services/roleApi";
+import type { PermissionDrawerRef } from "./components/permission-drawer";
+import PermissionDrawer from "./components/permission-drawer";
+
 function Roles() {
   const deleteConfirmDialogRef = useRef<DeleteConfirmDialogRef>(null);
   const createOrUpdateDialogRef = useRef<CreateOrUpdateDialogRef>(null);
+  const permissionDrawerRef = useRef<PermissionDrawerRef>(null);
 
   const [roleList, setRoleList] = useState<Role[]>([]);
 
@@ -36,6 +38,10 @@ function Roles() {
     if (res.code === 0) {
       setRoleList(res.data);
     }
+  }
+
+  function handleOpenPermissionDrawer(role: Role) {
+    permissionDrawerRef.current?.open(role);
   }
 
   function handleEdit(role: Role) {
@@ -60,7 +66,7 @@ function Roles() {
       <Card>
         <CardHeader>
           <div className="flex justify-between">
-            <CardTitle>Template list</CardTitle>
+            <CardTitle>Role list</CardTitle>
             <div>
               <Button
                 className="me-2"
@@ -76,6 +82,7 @@ function Roles() {
         <CardContent>
           <RoleTable
             data={roleList}
+            onPermission={handleOpenPermissionDrawer}
             onEdit={handleEdit}
             onDelete={handleDelete}
           />
@@ -91,6 +98,8 @@ function Roles() {
         ref={deleteConfirmDialogRef}
         onReload={handleReload}
       />
+
+      <PermissionDrawer ref={permissionDrawerRef} />
     </div>
   );
 }

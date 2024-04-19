@@ -1,9 +1,6 @@
 "use client";
 
-import {
-  useState,
-  useMemo,
-} from "react";
+import { useState, useMemo } from "react";
 import { formatDateWithTime } from "@/lib/format";
 
 import {
@@ -44,16 +41,20 @@ import {
 } from "@/components/ui/table";
 
 import { Template } from "@/types/template";
-import Link from "next/link";
+import { Role } from "@/types/role";
 
 type Props = {
-  data: Template[];
-  onDeleteTemplate: (templateId: string) => void;
+  data: Role[];
+  onEdit: (roleId: string) => void;
+  onDelete: (roleId: string) => void;
 };
 
-function RoleTable(
-  { data = [], onDeleteTemplate = (templateId: string) => {} }: Props) {
-  const columns: ColumnDef<Template>[] = useMemo(() => {
+function RoleTable({
+  data = [],
+  onEdit = (roleId: string) => {},
+  onDelete = (roleId: string) => {},
+}: Props) {
+  const columns: ColumnDef<Role>[] = useMemo(() => {
     return [
       {
         id: "select",
@@ -80,7 +81,7 @@ function RoleTable(
         enableHiding: false,
       },
       {
-        accessorKey: "title",
+        accessorKey: "name",
         header: ({ column }) => {
           return (
             <Button
@@ -89,13 +90,13 @@ function RoleTable(
                 column.toggleSorting(column.getIsSorted() === "asc")
               }
             >
-              Title
+              Role name
               <CaretSortIcon className="ml-2 h-4 w-4" />
             </Button>
           );
         },
         cell: ({ row }) => (
-          <div className="lowercase">{row.getValue("title")}</div>
+          <div className="lowercase">{row.getValue("name")}</div>
         ),
       },
       {
@@ -109,7 +110,7 @@ function RoleTable(
         id: "actions",
         enableHiding: false,
         cell: ({ row }) => {
-          const { _id: templateId } = row.original;
+          const { _id: roleId } = row.original;
           return (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -119,12 +120,16 @@ function RoleTable(
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
-                <DropdownMenuItem asChild className="cursor-pointer">
-                  <Link href={`/builder/template/${templateId}`}>Edit</Link>
+                <DropdownMenuItem
+                  asChild
+                  className="cursor-pointer"
+                  onClick={() => onEdit(roleId!)}
+                >
+                  Edit
                 </DropdownMenuItem>
                 <DropdownMenuItem
                   className="cursor-pointer"
-                  onClick={() => onDeleteTemplate(templateId!)}
+                  onClick={() => onDelete(roleId!)}
                 >
                   Delete
                 </DropdownMenuItem>
@@ -134,7 +139,7 @@ function RoleTable(
         },
       },
     ];
-  }, [onDeleteTemplate]);
+  }, [onEdit, onDelete]);
 
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -164,10 +169,10 @@ function RoleTable(
     <div className="w-full">
       <div className="flex items-center py-4">
         <Input
-          placeholder="Enter title to search..."
-          value={(table.getColumn("title")?.getFilterValue() as string) ?? ""}
+          placeholder="Enter name to search..."
+          value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
-            table.getColumn("title")?.setFilterValue(event.target.value)
+            table.getColumn("name")?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
         />

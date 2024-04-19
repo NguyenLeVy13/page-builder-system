@@ -36,6 +36,7 @@ import { createFunction, updateFunction } from "@/services/functionApi";
 
 const FormSchema = z.object({
   name: z.string().min(1, "Please enter function name."),
+  key: z.string().min(1, "Please enter function key."),
 });
 
 type Props = {
@@ -63,6 +64,7 @@ function CreateOrUpdateDialog({ onReload }: Props, ref: any) {
   async function formSubmit(data: z.infer<typeof FormSchema>) {
     const payload: FuncType = {
       name: data.name,
+      key: data.key,
     };
 
     if (dialogType === "create") {
@@ -105,6 +107,7 @@ function CreateOrUpdateDialog({ onReload }: Props, ref: any) {
         functionIdValue.current = funcType?._id || "";
 
         form.setValue("name", funcType?.name || "");
+        form.setValue("key", funcType?.key || "");
         
         setIsOpen(true);
       },
@@ -130,6 +133,19 @@ function CreateOrUpdateDialog({ onReload }: Props, ref: any) {
                 <FormLabel>Function name:</FormLabel>
                 <FormControl>
                   <Input placeholder="Enter function name" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="key"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Function key:</FormLabel>
+                <FormControl>
+                  <Input placeholder="Enter function key" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

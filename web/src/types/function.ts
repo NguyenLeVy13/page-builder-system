@@ -3,6 +3,7 @@ export type FuncType = {
   createdAt?: string;
   updatedAt?: string;
   name: string;
+  key: string;
 }
 
 export type FunctionListResponse = {

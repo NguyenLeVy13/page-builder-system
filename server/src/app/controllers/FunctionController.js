@@ -78,14 +78,14 @@ class FunctionController {
 				return;
 			}
 
-			// Kiểm tra name function đã tồn tại chưa
+			// Kiểm tra name | key function đã tồn tại chưa
 			const itemExisted = await FunctionSchema.findOne({
-				name: payload.name
+				$or: [{ name: payload.name }, { key: payload.key }]
 			});
 			if (itemExisted) {
 				res.json({
 					code: 2,
-					message: "Name or Pathname already exists",
+					message: "Function name or key already exists",
 				});
 				return;
 			}
@@ -122,19 +122,19 @@ class FunctionController {
 				return;
 			}
 
-			// Kiểm tra name | pathname function đã tồn tại chưa
+			// Kiểm tra name | key function đã tồn tại chưa
 			const itemExisted = await FunctionSchema.findOne({
 				_id: {
 					$not: {
 						$eq: id,
 					}
 				},
-				name: payload.name
+				$or: [{ name: payload.name }, { key: payload.key }]
 			});
 			if (itemExisted) {
 				res.json({
 					code: 2,
-					message: "Menu name or pathname already exists",
+					message: "Function name or key already exists",
 				});
 				return;
 			}

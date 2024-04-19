@@ -78,7 +78,7 @@ class MenuController {
 				return;
 			}
 
-			// Kiểm tra name menu đã tồn tại chưa
+			// Kiểm tra name | pathname menu đã tồn tại chưa
 			const itemExisted = await MenuSchema.findOne({
 				$or: [{ name: payload.name }, { pathname: payload.pathname }]
 			});

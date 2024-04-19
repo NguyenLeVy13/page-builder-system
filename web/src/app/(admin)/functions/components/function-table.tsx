@@ -99,6 +99,25 @@ function FunctionTable({
         ),
       },
       {
+        accessorKey: "key",
+        header: ({ column }) => {
+          return (
+            <Button
+              variant="ghost"
+              onClick={() =>
+                column.toggleSorting(column.getIsSorted() === "asc")
+              }
+            >
+              Function key
+              <CaretSortIcon className="ml-2 h-4 w-4" />
+            </Button>
+          );
+        },
+        cell: ({ row }) => (
+          <div>{row.getValue("key")}</div>
+        ),
+      },
+      {
         accessorKey: "createdAt",
         header: "Created At",
         cell: ({ row }) => (

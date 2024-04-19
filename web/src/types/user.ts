@@ -48,7 +48,7 @@ export type UserUpdateInfoRequest = {
   fullName?: string
 }
 
-export type UserUpdateResponse = {
+export type UserUpdatedResponse = {
   code: number;
   message: string
 }

@@ -1,6 +1,5 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
 import type { DeleteConfirmDialogRef } from "./components/delete-confirm-dialog";
@@ -13,14 +12,11 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import RoleTable from "./components/role-table";
 import DeleteConfirmDialog from "./components/delete-confirm-dialog";
-import { toast } from "sonner";
 
 //? APIS
 import { getRoleList } from "@/services/roleApi";
 
 function Roles() {
-  const router = useRouter();
-
   const deleteConfirmDialogRef = useRef<DeleteConfirmDialogRef>(null);
 
   const [roleList, setRoleList] = useState<Role[]>([]);

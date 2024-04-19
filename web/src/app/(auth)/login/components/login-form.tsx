@@ -7,13 +7,13 @@ import { useRouter } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Checkbox } from "@/components/ui/checkbox";
 import { toast } from "sonner";
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { login } from "@/services/userApi";
@@ -48,7 +48,7 @@ function LoginForm() {
         document.cookie = `user-email=${userDataRes.email}`;
         document.cookie = `user-full-name=${userDataRes.fullName}`;
         document.cookie = `user-role-id=${userDataRes.roleId}`;
-        
+
         router.push("/dashboard");
       }
     } else {
@@ -61,9 +61,18 @@ function LoginForm() {
       <form onSubmit={form.handleSubmit(formSubmit)}>
         <div className="mx-auto grid w-[350px] gap-6">
           <div className="grid gap-2 text-center">
-            <h1 className="text-3xl font-bold">Page Builder System</h1>
+            <h1 className="text-3xl font-bold">
+              Welcome to{" "}
+              <span
+                style={{
+                  color: "#E31C79",
+                }}
+              >
+                BlockCraft
+              </span>
+            </h1>
             <p className="text-balance text-muted-foreground">
-              Welcome to Page Builder System
+              Login to your BlockCraft account
             </p>
           </div>
           <div className="grid gap-4">
@@ -73,9 +82,8 @@ function LoginForm() {
                 name="email"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Email</FormLabel>
                     <FormControl>
-                      <Input placeholder="m@example.com" {...field} />
+                      <Input placeholder="Email" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -88,16 +96,28 @@ function LoginForm() {
                 name="password"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Password</FormLabel>
                     <FormControl>
-                      <Input type="password" {...field} />
+                      <Input
+                        type="password"
+                        {...field}
+                        placeholder="Password"
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
             </div>
-            <Button type="submit" className="w-full">
+            <div className="flex items-center space-x-2">
+              <Checkbox id="terms" />
+              <label
+                htmlFor="terms"
+                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+              >
+                Remember me
+              </label>
+            </div>
+            <Button type="submit" className="w-full mt-3">
               Login
             </Button>
           </div>

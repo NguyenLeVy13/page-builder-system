@@ -1,0 +1,266 @@
+[{
+  "_id": {
+    "$oid": "6622954f836e08e4460bb0a0"
+  },
+  "name": "Create template with example",
+  "key": "create-template-with-example",
+  "createdAt": {
+    "$date": "2024-04-19T16:01:19.319Z"
+  },
+  "updatedAt": {
+    "$date": "2024-04-20T11:54:14.349Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6623acf8a1c8f7920addae9b"
+  },
+  "name": "Create template with blank",
+  "key": "create-template-with-blank",
+  "createdAt": {
+    "$date": "2024-04-20T11:54:32.184Z"
+  },
+  "updatedAt": {
+    "$date": "2024-04-20T11:54:32.184Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6623ad01a1c8f7920addaea0"
+  },
+  "name": "Edit template",
+  "key": "edit-template",
+  "createdAt": {
+    "$date": "2024-04-20T11:54:41.980Z"
+  },
+  "updatedAt": {
+    "$date": "2024-04-20T11:54:41.980Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6623ad0da1c8f7920addaea5"
+  },
+  "name": "Delete template",
+  "key": "delete-template",
+  "createdAt": {
+    "$date": "2024-04-20T11:54:53.089Z"
+  },
+  "updatedAt": {
+    "$date": "2024-04-20T11:54:53.089Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6623ad15a1c8f7920addaeaa"
+  },
+  "name": "Create role",
+  "key": "create-role",
+  "createdAt": {
+    "$date": "2024-04-20T11:55:01.242Z"
+  },
+  "updatedAt": {
+    "$date": "2024-04-20T11:55:01.242Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6623ad1fa1c8f7920addaeaf"
+  },
+  "name": "Set role permissions",
+  "key": "set-role-permissions",
+  "createdAt": {
+    "$date": "2024-04-20T11:55:11.568Z"
+  },
+  "updatedAt": {
+    "$date": "2024-04-20T11:55:11.568Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6623ad27a1c8f7920addaeb4"
+  },
+  "name": "Edit role",
+  "key": "edit-role",
+  "createdAt": {
+    "$date": "2024-04-20T11:55:19.656Z"
+  },
+  "updatedAt": {
+    "$date": "2024-04-20T11:55:19.656Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6623ad30a1c8f7920addaeb9"
+  },
+  "name": "Delete role",
+  "key": "delete-role",
+  "createdAt": {
+    "$date": "2024-04-20T11:55:28.230Z"
+  },
+  "updatedAt": {
+    "$date": "2024-04-20T11:55:28.230Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6623ad38a1c8f7920addaebe"
+  },
+  "name": "Create menu",
+  "key": "create-menu",
+  "createdAt": {
+    "$date": "2024-04-20T11:55:36.552Z"
+  },
+  "updatedAt": {
+    "$date": "2024-04-20T11:55:36.552Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6623ad40a1c8f7920addaec3"
+  },
+  "name": "Edit menu",
+  "key": "edit-menu",
+  "createdAt": {
+    "$date": "2024-04-20T11:55:44.368Z"
+  },
+  "updatedAt": {
+    "$date": "2024-04-20T11:55:44.368Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6623ad49a1c8f7920addaec8"
+  },
+  "name": "Delete menu",
+  "key": "delete-menu",
+  "createdAt": {
+    "$date": "2024-04-20T11:55:53.829Z"
+  },
+  "updatedAt": {
+    "$date": "2024-04-20T11:55:53.829Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6623ad56a1c8f7920addaecd"
+  },
+  "name": "Create function",
+  "key": "create-function",
+  "createdAt": {
+    "$date": "2024-04-20T11:56:06.078Z"
+  },
+  "updatedAt": {
+    "$date": "2024-04-20T11:56:06.078Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6623ad5da1c8f7920addaed2"
+  },
+  "name": "Edit function",
+  "key": "edit-function",
+  "createdAt": {
+    "$date": "2024-04-20T11:56:13.394Z"
+  },
+  "updatedAt": {
+    "$date": "2024-04-20T11:56:13.394Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6623ad65a1c8f7920addaed7"
+  },
+  "name": "Delete function",
+  "key": "delete-function",
+  "createdAt": {
+    "$date": "2024-04-20T11:56:21.236Z"
+  },
+  "updatedAt": {
+    "$date": "2024-04-20T11:56:21.236Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6623ad6ca1c8f7920addaedc"
+  },
+  "name": "Create user",
+  "key": "create-user",
+  "createdAt": {
+    "$date": "2024-04-20T11:56:28.886Z"
+  },
+  "updatedAt": {
+    "$date": "2024-04-20T11:56:28.886Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6623ad76a1c8f7920addaee1"
+  },
+  "name": "Set user role",
+  "key": "set-user-role",
+  "createdAt": {
+    "$date": "2024-04-20T11:56:38.587Z"
+  },
+  "updatedAt": {
+    "$date": "2024-04-20T11:56:38.587Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6623ad7ea1c8f7920addaee6"
+  },
+  "name": "Delete user",
+  "key": "delete-user",
+  "createdAt": {
+    "$date": "2024-04-20T11:56:46.166Z"
+  },
+  "updatedAt": {
+    "$date": "2024-04-20T11:56:46.166Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6623ad87a1c8f7920addaeeb"
+  },
+  "name": "Update account info",
+  "key": "update-account-info",
+  "createdAt": {
+    "$date": "2024-04-20T11:56:55.483Z"
+  },
+  "updatedAt": {
+    "$date": "2024-04-20T11:56:55.483Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6623ad91a1c8f7920addaef0"
+  },
+  "name": "Change account password",
+  "key": "change-account-password",
+  "createdAt": {
+    "$date": "2024-04-20T11:57:05.555Z"
+  },
+  "updatedAt": {
+    "$date": "2024-04-20T11:57:05.555Z"
+  },
+  "__v": 0
+}]

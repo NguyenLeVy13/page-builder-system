@@ -1,0 +1,32 @@
+[{
+  "_id": {
+    "$oid": "6620e241c6cef822380e56b2"
+  },
+  "email": "levi@gmail.com",
+  "password": "$2b$10$prUqeXp0P3MiI/kYISTJyuxb6g7o.9a4YS7KLL72wLu1nCjYhMhjO",
+  "fullName": "Nguyễn Lê Vy",
+  "roleId": "66210ac900c03f9e5770c486",
+  "createdAt": {
+    "$date": "2024-04-18T09:05:05.445Z"
+  },
+  "updatedAt": {
+    "$date": "2024-04-20T11:52:38.095Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "66234f23e6d1383352096e67"
+  },
+  "email": "admin@gmail.com",
+  "password": "$2b$10$SOGwV.6a8/dz8nhBPNMkJ.MuRbRAyT0H7p2x0L3TYPNzT8tDPo2aO",
+  "fullName": "Thanh Long",
+  "roleId": "66237981cc9156253862aa44",
+  "createdAt": {
+    "$date": "2024-04-20T05:14:11.522Z"
+  },
+  "updatedAt": {
+    "$date": "2024-04-20T11:52:55.490Z"
+  },
+  "__v": 0
+}]

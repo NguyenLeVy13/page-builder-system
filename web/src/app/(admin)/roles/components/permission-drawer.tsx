@@ -1,11 +1,5 @@
 "use client";
-import {
-  forwardRef,
-  useImperativeHandle,
-  useState,
-  useEffect,
-  useCallback,
-} from "react";
+import { forwardRef, useImperativeHandle, useState, useEffect } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -34,7 +28,8 @@ import {
 } from "@/services/permissionApi";
 
 import { Menu } from "@/types/menu";
-import { FuncType, FunctionListResponse } from "@/types/function";
+import { FuncType } from "@/types/function";
+import { toast } from "sonner";
 
 export type PermissionDrawerRef = {
   open: (role?: Role) => void;
@@ -57,8 +52,13 @@ function PermissionDrawer(props: Props, ref: any) {
   const [menuList, setMenuList] = useState<PermissionMenu[]>([]);
   const [functionList, setFunctionList] = useState<PermissionFunction[]>([]);
 
-  const fetchPermissionMenuList = useCallback(async (data: PermissionMenu[]) => {
+  const fetchPermissionMenuList = async (data: PermissionMenu[]) => {
+    if (!role) return;
+
     const params = new URLSearchParams();
+    params.append("searchType", "roleId");
+    params.append("searchValue", role._id!);
+    
     const res = await getRoleMenuList(params);
     if (res.code === 0) {
       const newMenuList = data.map((menu) => {
@@ -70,10 +70,15 @@ function PermissionDrawer(props: Props, ref: any) {
 
       setMenuList(newMenuList);
     }
-  }, []);
+  };
 
-  const fetchPermissionFunctionList = useCallback(async (data: PermissionFunction[]) => {
+  const fetchPermissionFunctionList = async (data: PermissionFunction[]) => {
+    if (!role) return;
+
     const params = new URLSearchParams();
+    params.append("searchType", "roleId");
+    params.append("searchValue", role._id!);
+
     const res = await getRoleFunctionList(params);
     if (res.code === 0) {
       const newFuncList = data.map((func) => {
@@ -85,7 +90,7 @@ function PermissionDrawer(props: Props, ref: any) {
 
       setFunctionList(newFuncList);
     }
-  }, []);
+  };
 
   useEffect(() => {
     ~(async () => {
@@ -102,7 +107,7 @@ function PermissionDrawer(props: Props, ref: any) {
         setFunctionList(fetchFunctionListRes.data);
       }
     })();
-  }, []);
+  }, [role]);
 
   function close() {
     setIsOpen(false);
@@ -118,6 +123,83 @@ function PermissionDrawer(props: Props, ref: any) {
     const params = new URLSearchParams();
     const res = await getFunctionList(params);
     return res;
+  }
+
+  async function handleTogglePermissionMenu(menuId: string, checked: boolean) {
+    if (checked) {
+      const res = await registerRoleMenu({ roleId: role!._id!, menuId });
+      if (res.code === 0) {
+        toast.success("Permission register successfully.");
+        setMenuList((prev) =>
+          prev.map((i) => {
+            if (i._id === menuId) {
+              i.checked = true;
+            }
+            return i;
+          })
+        );
+      } else {
+        toast.error(res.message);
+      }
+    } else {
+      const res = await deregisterRoleMenu({ roleId: role!._id!, menuId });
+      if (res.code === 0) {
+        toast.success("Permission deregister successfully.");
+        setMenuList((prev) =>
+          prev.map((i) => {
+            if (i._id === menuId) {
+              i.checked = false;
+            }
+            return i;
+          })
+        );
+      } else {
+        toast.error(res.message);
+      }
+    }
+  }
+
+  async function handleTogglePermissionFunction(
+    functionId: string,
+    checked: boolean
+  ) {
+    if (checked) {
+      const res = await registerRoleFunction({
+        roleId: role!._id!,
+        functionId,
+      });
+      if (res.code === 0) {
+        toast.success("Permission register successfully.");
+        setFunctionList((prev) =>
+          prev.map((i) => {
+            if (i._id === functionId) {
+              i.checked = true;
+            }
+            return i;
+          })
+        );
+      } else {
+        toast.error(res.message);
+      }
+    } else {
+      const res = await deregisterRoleFunction({
+        roleId: role!._id!,
+        functionId,
+      });
+      if (res.code === 0) {
+        toast.success("Permission deregister successfully.");
+        setFunctionList((prev) =>
+          prev.map((i) => {
+            if (i._id === functionId) {
+              i.checked = false;
+            }
+            return i;
+          })
+        );
+      } else {
+        toast.error(res.message);
+      }
+    }
   }
 
   useImperativeHandle(
@@ -156,7 +238,14 @@ function PermissionDrawer(props: Props, ref: any) {
                   key={i._id}
                   className="flex items-center space-x-2 mb-4 cursor-pointer"
                 >
-                  <Checkbox id={i._id} value={i._id} />
+                  <Checkbox
+                    id={i._id}
+                    value={i._id}
+                    checked={i.checked}
+                    onCheckedChange={(checked: boolean) =>
+                      handleTogglePermissionMenu(i._id!, checked)
+                    }
+                  />
                   <label
                     htmlFor={i._id}
                     className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
@@ -172,7 +261,14 @@ function PermissionDrawer(props: Props, ref: any) {
                   key={i._id}
                   className="flex items-center space-x-2 mb-4 cursor-pointer"
                 >
-                  <Checkbox id={i._id} value={i._id} />
+                  <Checkbox
+                    id={i._id}
+                    value={i._id}
+                    checked={i.checked}
+                    onCheckedChange={(checked: boolean) =>
+                      handleTogglePermissionFunction(i._id!, checked)
+                    }
+                  />
                   <label
                     htmlFor={i._id}
                     className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"

@@ -17,9 +17,11 @@ import { toast } from "sonner";
 
 //? APIS
 import { getTemplateList } from "@/services/templateApi";
+import useFunctionPermission from "@/hooks/useFunctionPermission";
 
 function Templates() {
   const router = useRouter();
+  const funcPermission = useFunctionPermission();
 
   const deleteConfirmDialogRef = useRef<DeleteConfirmDialogRef>(null);
 
@@ -59,14 +61,21 @@ function Templates() {
           <div className="flex justify-between">
             <CardTitle>Template list</CardTitle>
             <div>
-              <Button className="me-2" onClick={() => handleRedirectToBuilder("example")}>
-                <MixIcon className="mr-2 h-4 w-4" />
-                Create with example
-              </Button>
-              <Button onClick={() => handleRedirectToBuilder("blank")}>
-                <StackIcon className="mr-2 h-4 w-4" />
-                Create with blank
-              </Button>
+              {funcPermission.check("create-template-with-example") && (
+                <Button
+                  className="me-2"
+                  onClick={() => handleRedirectToBuilder("example")}
+                >
+                  <MixIcon className="mr-2 h-4 w-4" />
+                  Create with example
+                </Button>
+              )}
+              {funcPermission.check("create-template-with-blank") && (
+                <Button onClick={() => handleRedirectToBuilder("blank")}>
+                  <StackIcon className="mr-2 h-4 w-4" />
+                  Create with blank
+                </Button>
+              )}
             </div>
           </div>
         </CardHeader>

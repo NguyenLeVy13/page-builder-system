@@ -41,6 +41,7 @@ import {
 } from "@/components/ui/table";
 
 import { Menu } from "@/types/menu";
+import useFunctionPermission from "@/hooks/useFunctionPermission";
 
 type Props = {
   data: Menu[];
@@ -53,6 +54,8 @@ function MenuTable({
   onEdit = (menu: Menu) => {},
   onDelete = (menuId: string) => {},
 }: Props) {
+  const funcPermission = useFunctionPermission();
+
   const columns: ColumnDef<Menu>[] = useMemo(() => {
     return [
       {
@@ -94,9 +97,7 @@ function MenuTable({
             </Button>
           );
         },
-        cell: ({ row }) => (
-          <div>{row.getValue("name")}</div>
-        ),
+        cell: ({ row }) => <div>{row.getValue("name")}</div>,
       },
       {
         accessorKey: "pathname",
@@ -113,9 +114,7 @@ function MenuTable({
             </Button>
           );
         },
-        cell: ({ row }) => (
-          <div>{row.getValue("pathname")}</div>
-        ),
+        cell: ({ row }) => <div>{row.getValue("pathname")}</div>,
       },
       {
         accessorKey: "createdAt",
@@ -138,18 +137,22 @@ function MenuTable({
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
-                <DropdownMenuItem
-                  className="cursor-pointer"
-                  onClick={() => onEdit(row.original)}
-                >
-                  Edit
-                </DropdownMenuItem>
-                <DropdownMenuItem
-                  className="cursor-pointer"
-                  onClick={() => onDelete(menuId!)}
-                >
-                  Delete
-                </DropdownMenuItem>
+                {funcPermission.check("edit-menu") && (
+                  <DropdownMenuItem
+                    className="cursor-pointer"
+                    onClick={() => onEdit(row.original)}
+                  >
+                    Edit
+                  </DropdownMenuItem>
+                )}
+                {funcPermission.check("delete-menu") && (
+                  <DropdownMenuItem
+                    className="cursor-pointer"
+                    onClick={() => onDelete(menuId!)}
+                  >
+                    Delete
+                  </DropdownMenuItem>
+                )}
               </DropdownMenuContent>
             </DropdownMenu>
           );

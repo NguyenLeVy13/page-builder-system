@@ -19,8 +19,11 @@ import CreateOrUpdateDialog, {
 import { getUserList } from "@/services/userApi";
 import { getRoleList } from "@/services/roleApi";
 import { Role } from "@/types/role";
+import useFunctionPermission from "@/hooks/useFunctionPermission";
 
 function Users() {
+  const funcPermission = useFunctionPermission();
+
   const deleteConfirmDialogRef = useRef<DeleteConfirmDialogRef>(null);
   const createOrUpdateDialogRef = useRef<CreateOrUpdateDialogRef>(null);
 
@@ -70,13 +73,15 @@ function Users() {
           <div className="flex justify-between">
             <CardTitle>User list</CardTitle>
             <div>
-              <Button
-                className="me-2"
-                onClick={() => handleOpenCreateOrUpdateDialog()}
-              >
-                <PlusIcon className="mr-2 h-4 w-4" />
-                New user
-              </Button>
+              {funcPermission.check("create-user") && (
+                <Button
+                  className="me-2"
+                  onClick={() => handleOpenCreateOrUpdateDialog()}
+                >
+                  <PlusIcon className="mr-2 h-4 w-4" />
+                  New user
+                </Button>
+              )}
             </div>
           </div>
         </CardHeader>

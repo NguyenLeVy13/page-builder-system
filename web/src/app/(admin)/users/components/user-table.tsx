@@ -51,6 +51,7 @@ import { User } from "@/types/user";
 import { Role } from "@/types/role";
 import { updateRoleById } from "@/services/userApi";
 import { toast } from "sonner";
+import useFunctionPermission from "@/hooks/useFunctionPermission";
 
 type Props = {
   data: User[];
@@ -63,6 +64,8 @@ function UserTable({
   roleList = [],
   onDelete = (userId: string) => {},
 }: Props) {
+  const funcPermission = useFunctionPermission();
+
   const columns: ColumnDef<User>[] = useMemo(() => {
     return [
       {
@@ -150,21 +153,29 @@ function UserTable({
             }
           }
 
-          return (
-            <Select onValueChange={(v) => { handleChangeRoleForUser(row.original, v) }} defaultValue={row.getValue("roleId")}>
-              <SelectTrigger>
-                <SelectValue placeholder="Select a role" />
-              </SelectTrigger>
-              <SelectContent>
-                {roleList.map((role) => (
-                  <SelectItem key={role._id} value={role._id!}>
-                    {role.name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-            // <div>{getRoleName(row.getValue("roleId"))}</div>
-          )
+          if (funcPermission.check("set-user-role")) {
+            return (
+              <Select
+                onValueChange={(v) => {
+                  handleChangeRoleForUser(row.original, v);
+                }}
+                defaultValue={row.getValue("roleId")}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select a role" />
+                </SelectTrigger>
+                <SelectContent>
+                  {roleList.map((role) => (
+                    <SelectItem key={role._id} value={role._id!}>
+                      {role.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            );
+          }
+
+          return <div>{getRoleName(row.getValue("roleId"))}</div>;
         },
       },
       {
@@ -188,12 +199,14 @@ function UserTable({
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
-                <DropdownMenuItem
-                  className="cursor-pointer"
-                  onClick={() => onDelete(userId!)}
-                >
-                  Delete
-                </DropdownMenuItem>
+                {funcPermission.check("delete-user") && (
+                  <DropdownMenuItem
+                    className="cursor-pointer"
+                    onClick={() => onDelete(userId!)}
+                  >
+                    Delete
+                  </DropdownMenuItem>
+                )}
               </DropdownMenuContent>
             </DropdownMenu>
           );

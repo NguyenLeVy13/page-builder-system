@@ -17,8 +17,11 @@ import CreateOrUpdateDialog, {
 } from "./components/create-or-update-dialog";
 
 import { getFunctionList } from "@/services/functionApi";
+import useFunctionPermission from "@/hooks/useFunctionPermission";
 
 function Functions() {
+  const funcPermission = useFunctionPermission();
+
   const deleteConfirmDialogRef = useRef<DeleteConfirmDialogRef>(null);
   const createOrUpdateDialogRef = useRef<CreateOrUpdateDialogRef>(null);
 
@@ -61,13 +64,15 @@ function Functions() {
           <div className="flex justify-between">
             <CardTitle>Function list</CardTitle>
             <div>
-              <Button
-                className="me-2"
-                onClick={() => handleOpenCreateOrUpdateDialog()}
-              >
-                <PlusIcon className="mr-2 h-4 w-4" />
-                New function
-              </Button>
+              {funcPermission.check("create-function") && (
+                <Button
+                  className="me-2"
+                  onClick={() => handleOpenCreateOrUpdateDialog()}
+                >
+                  <PlusIcon className="mr-2 h-4 w-4" />
+                  New function
+                </Button>
+              )}
             </div>
           </div>
         </CardHeader>

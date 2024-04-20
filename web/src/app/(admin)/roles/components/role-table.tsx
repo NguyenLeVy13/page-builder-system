@@ -41,6 +41,7 @@ import {
 } from "@/components/ui/table";
 
 import { Role } from "@/types/role";
+import useFunctionPermission from "@/hooks/useFunctionPermission";
 
 type Props = {
   data: Role[];
@@ -55,6 +56,8 @@ function RoleTable({
   onEdit = (role: Role) => {},
   onDelete = (roleId: string) => {},
 }: Props) {
+  const funcPermission = useFunctionPermission();
+
   const columns: ColumnDef<Role>[] = useMemo(() => {
     return [
       {
@@ -96,9 +99,7 @@ function RoleTable({
             </Button>
           );
         },
-        cell: ({ row }) => (
-          <div>{row.getValue("name")}</div>
-        ),
+        cell: ({ row }) => <div>{row.getValue("name")}</div>,
       },
       {
         accessorKey: "createdAt",
@@ -121,24 +122,30 @@ function RoleTable({
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
-                <DropdownMenuItem
-                  className="cursor-pointer"
-                  onClick={() => onPermission(row.original)}
-                >
-                  Permission
-                </DropdownMenuItem>
-                <DropdownMenuItem
-                  className="cursor-pointer"
-                  onClick={() => onEdit(row.original)}
-                >
-                  Edit
-                </DropdownMenuItem>
-                <DropdownMenuItem
-                  className="cursor-pointer"
-                  onClick={() => onDelete(roleId!)}
-                >
-                  Delete
-                </DropdownMenuItem>
+                {funcPermission.check("set-role-permissions") && (
+                  <DropdownMenuItem
+                    className="cursor-pointer"
+                    onClick={() => onPermission(row.original)}
+                  >
+                    Permission
+                  </DropdownMenuItem>
+                )}
+                {funcPermission.check("edit-role") && (
+                  <DropdownMenuItem
+                    className="cursor-pointer"
+                    onClick={() => onEdit(row.original)}
+                  >
+                    Edit
+                  </DropdownMenuItem>
+                )}
+                {funcPermission.check("delete-role") && (
+                  <DropdownMenuItem
+                    className="cursor-pointer"
+                    onClick={() => onDelete(roleId!)}
+                  >
+                    Delete
+                  </DropdownMenuItem>
+                )}
               </DropdownMenuContent>
             </DropdownMenu>
           );

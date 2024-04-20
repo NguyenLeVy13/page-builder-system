@@ -41,6 +41,7 @@ import {
 } from "@/components/ui/table";
 
 import { FuncType } from "@/types/function";
+import useFunctionPermission from "@/hooks/useFunctionPermission";
 
 type Props = {
   data: FuncType[];
@@ -53,6 +54,8 @@ function FunctionTable({
   onEdit = (func: FuncType) => {},
   onDelete = (funcId: string) => {},
 }: Props) {
+  const funcPermission = useFunctionPermission();
+
   const columns: ColumnDef<FuncType>[] = useMemo(() => {
     return [
       {
@@ -94,9 +97,7 @@ function FunctionTable({
             </Button>
           );
         },
-        cell: ({ row }) => (
-          <div>{row.getValue("name")}</div>
-        ),
+        cell: ({ row }) => <div>{row.getValue("name")}</div>,
       },
       {
         accessorKey: "key",
@@ -113,9 +114,7 @@ function FunctionTable({
             </Button>
           );
         },
-        cell: ({ row }) => (
-          <div>{row.getValue("key")}</div>
-        ),
+        cell: ({ row }) => <div>{row.getValue("key")}</div>,
       },
       {
         accessorKey: "createdAt",
@@ -138,18 +137,22 @@ function FunctionTable({
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
-                <DropdownMenuItem
-                  className="cursor-pointer"
-                  onClick={() => onEdit(row.original)}
-                >
-                  Edit
-                </DropdownMenuItem>
-                <DropdownMenuItem
-                  className="cursor-pointer"
-                  onClick={() => onDelete(funcId!)}
-                >
-                  Delete
-                </DropdownMenuItem>
+                {funcPermission.check("edit-function") && (
+                  <DropdownMenuItem
+                    className="cursor-pointer"
+                    onClick={() => onEdit(row.original)}
+                  >
+                    Edit
+                  </DropdownMenuItem>
+                )}
+                {funcPermission.check("delete-function") && (
+                  <DropdownMenuItem
+                    className="cursor-pointer"
+                    onClick={() => onDelete(funcId!)}
+                  >
+                    Delete
+                  </DropdownMenuItem>
+                )}
               </DropdownMenuContent>
             </DropdownMenu>
           );

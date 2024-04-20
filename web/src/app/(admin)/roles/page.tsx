@@ -19,8 +19,11 @@ import CreateOrUpdateDialog, {
 import { getRoleList } from "@/services/roleApi";
 import type { PermissionDrawerRef } from "./components/permission-drawer";
 import PermissionDrawer from "./components/permission-drawer";
+import useFunctionPermission from "@/hooks/useFunctionPermission";
 
 function Roles() {
+  const funcPermission = useFunctionPermission();
+
   const deleteConfirmDialogRef = useRef<DeleteConfirmDialogRef>(null);
   const createOrUpdateDialogRef = useRef<CreateOrUpdateDialogRef>(null);
   const permissionDrawerRef = useRef<PermissionDrawerRef>(null);
@@ -68,13 +71,15 @@ function Roles() {
           <div className="flex justify-between">
             <CardTitle>Role list</CardTitle>
             <div>
-              <Button
-                className="me-2"
-                onClick={() => handleOpenCreateOrUpdateDialog()}
-              >
-                <PlusIcon className="mr-2 h-4 w-4" />
-                New role
-              </Button>
+              {funcPermission.check("create-role") && (
+                <Button
+                  className="me-2"
+                  onClick={() => handleOpenCreateOrUpdateDialog()}
+                >
+                  <PlusIcon className="mr-2 h-4 w-4" />
+                  New role
+                </Button>
+              )}
             </div>
           </div>
         </CardHeader>

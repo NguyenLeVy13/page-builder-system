@@ -17,8 +17,11 @@ import CreateOrUpdateDialog, {
 } from "./components/create-or-update-dialog";
 
 import { getMenuList } from "@/services/menuApi";
+import useFunctionPermission from "@/hooks/useFunctionPermission";
 
 function Menu() {
+  const funcPermission = useFunctionPermission();
+
   const deleteConfirmDialogRef = useRef<DeleteConfirmDialogRef>(null);
   const createOrUpdateDialogRef = useRef<CreateOrUpdateDialogRef>(null);
 
@@ -61,13 +64,15 @@ function Menu() {
           <div className="flex justify-between">
             <CardTitle>Menu list</CardTitle>
             <div>
-              <Button
-                className="me-2"
-                onClick={() => handleOpenCreateOrUpdateDialog()}
-              >
-                <PlusIcon className="mr-2 h-4 w-4" />
-                New menu
-              </Button>
+              {funcPermission.check("create-menu") && (
+                <Button
+                  className="me-2"
+                  onClick={() => handleOpenCreateOrUpdateDialog()}
+                >
+                  <PlusIcon className="mr-2 h-4 w-4" />
+                  New menu
+                </Button>
+              )}
             </div>
           </div>
         </CardHeader>

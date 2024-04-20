@@ -51,10 +51,8 @@ class RoleFunctionController {
 
 			// Kiểm tra role-function đã tồn tại chưa
 			const itemExisted = await RoleFunctionSchema.findOne({
-				$and: [
-					{ roleId: payload.roleId },
-					{ functionId: payload.functionId },
-				]
+				roleId: payload.roleId,
+				functionId: payload.functionId
 			});
 			if (itemExisted) {
 				res.json({
@@ -86,10 +84,8 @@ class RoleFunctionController {
 
 			// Xóa role-function trong CSDL
 			const deleteResult = await RoleFunctionSchema.deleteOne({
-				$and: [
-					{ roleId: payload.roleId },
-					{ functionId: payload.functionId },
-				]
+				roleId: payload.roleId,
+				functionId: payload.functionId
 			});
 
 			if (deleteResult.deletedCount > 0) {

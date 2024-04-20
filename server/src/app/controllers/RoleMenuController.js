@@ -51,10 +51,8 @@ class RoleMenuController {
 
 			// Kiểm tra role-menu đã tồn tại chưa
 			const itemExisted = await RoleMenuSchema.findOne({
-				$and: [
-					{ roleId: payload.roleId },
-					{ menuId: payload.menuId },
-				]
+				roleId: payload.roleId,
+				menuId: payload.menuId
 			});
 			if (itemExisted) {
 				res.json({
@@ -86,10 +84,8 @@ class RoleMenuController {
 
 			// Xóa role-menu trong CSDL
 			const deleteResult = await RoleMenuSchema.deleteOne({
-				$and: [
-					{ roleId: payload.roleId },
-					{ menuId: payload.menuId },
-				]
+				roleId: payload.roleId,
+				menuId: payload.menuId
 			});
 
 			if (deleteResult.deletedCount > 0) {

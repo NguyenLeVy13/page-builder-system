@@ -8,6 +8,9 @@ export default function useMenuPermission() {
       const menuPermissions = JSON.parse(menuPermissionsJSON ?? "[]");
       if (!menuPermissions || !Array.isArray(menuPermissions)) return false;
 
+      console.log(pathname);
+      console.log(menuPermissions);
+
       const hasPermission = menuPermissions.find(
         (menu) => menu.pathname === pathname
       );

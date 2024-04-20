@@ -18,6 +18,8 @@ import {
   PersonIcon,
 } from "@radix-ui/react-icons";
 
+import useMenuPermission from "@/hooks/useMenuPermission";
+
 const menuItems: { name: string; path: string; icon: any }[] = [
   { name: "Dashboard", path: "/dashboard", icon: <DesktopIcon /> },
   { name: "Templates", path: "/templates", icon: <StackIcon /> },
@@ -31,6 +33,7 @@ const menuItems: { name: string; path: string; icon: any }[] = [
 
 function Navigation() {
   const pathname = usePathname();
+  const menuPermission = useMenuPermission();
 
   return (
     <>
@@ -42,7 +45,7 @@ function Navigation() {
           <Package2 className="h-6 w-6" />
           <span className="sr-only">Acme Inc</span>
         </Link>
-        {menuItems.map((i) => (
+        {menuItems.filter(i => menuPermission.check(i.path)).map((i) => (
           <Link
             key={i.path}
             href={i.path}
@@ -71,7 +74,7 @@ function Navigation() {
               <Package2 className="h-6 w-6" />
               <span className="sr-only">Acme Inc</span>
             </Link>
-            {menuItems.map((i) => (
+            {menuItems.filter(i => menuPermission.check(i.path)).map((i) => (
               <Link
                 key={i.path}
                 href={i.path}

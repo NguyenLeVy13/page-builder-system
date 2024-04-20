@@ -102,7 +102,7 @@ UserSchema.methods.getMenuPermissions = async function () {
 			});
 		}
 
-		return result.filter(permission => permission !== null);
+		return result;
 	} catch (error) {
 		return [];
 	}

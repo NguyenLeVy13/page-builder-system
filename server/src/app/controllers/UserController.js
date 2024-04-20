@@ -159,9 +159,7 @@ class UserController {
 			}
 
 			const menuPermissions = await userExist.getMenuPermissions();
-			console.log("🚀 ~ UserController ~ login ~ menuPermissions:", menuPermissions)
 			const functionPermissions = await userExist.getFunctionPermissions();
-			console.log("🚀 ~ UserController ~ login ~ functionPermissions:", functionPermissions)
 
 			res.json({
 				code: 0,

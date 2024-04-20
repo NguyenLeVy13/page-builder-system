@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { checkLoggedIn, checkPermissionMenu } from "./auth/user";
+import { checkLoggedIn, checkMenuPermission } from "./auth/user";
 
 // This function can be marked `async` if using `await` inside
 export function middleware(request: NextRequest) {
@@ -10,7 +10,7 @@ export function middleware(request: NextRequest) {
   }
 
   // Check permissions
-  if (!checkPermissionMenu(request)) {
+  if (!checkMenuPermission(request)) {
     return NextResponse.redirect(new URL("/error-404-page", request.url));
   }
 

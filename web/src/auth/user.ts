@@ -8,14 +8,12 @@ export function checkLoggedIn(request: NextRequest): boolean {
   return Boolean(userEmailCookie?.value) ?? false;
 }
 
-export function checkPermissionMenu(request: NextRequest): boolean {
+export function checkMenuPermission(request: NextRequest): boolean {
   const menuPermissionsJSON = request.cookies.get("menu-permissions")?.value;
   const menuPermissions = JSON.parse(menuPermissionsJSON ?? "[]");
   if (!menuPermissions || !Array.isArray(menuPermissions)) return false;
 
   const pathname = request.nextUrl.pathname;
-  console.log("pathname: ", pathname);
-  console.log("menu per: ", menuPermissions);
   const hasPermission = menuPermissions.find(
     (menu: Menu) => menu.pathname === pathname
   );

@@ -39,9 +39,18 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 import { User } from "@/types/user";
 import { Role } from "@/types/role";
+import { updateRoleById } from "@/services/userApi";
+import { toast } from "sonner";
 
 type Props = {
   data: User[];
@@ -95,9 +104,7 @@ function UserTable({
             </Button>
           );
         },
-        cell: ({ row }) => (
-          <div>{row.getValue("email")}</div>
-        ),
+        cell: ({ row }) => <div>{row.getValue("email")}</div>,
       },
       {
         accessorKey: "fullName",
@@ -114,9 +121,7 @@ function UserTable({
             </Button>
           );
         },
-        cell: ({ row }) => (
-          <div>{row.getValue("fullName")}</div>
-        ),
+        cell: ({ row }) => <div>{row.getValue("fullName")}</div>,
       },
       {
         accessorKey: "roleId",
@@ -133,9 +138,34 @@ function UserTable({
             </Button>
           );
         },
-        cell: ({ row }) => (
-          <div>{getRoleName(row.getValue("roleId"))}</div>
-        ),
+        cell: ({ row }) => {
+          async function handleChangeRoleForUser(user: User, roleId: string) {
+            const res = await updateRoleById(user._id!, {
+              newRoleId: roleId,
+            });
+            if (res.code === 0) {
+              toast.success("Update role successfully");
+            } else {
+              toast.error(res.message);
+            }
+          }
+
+          return (
+            <Select onValueChange={(v) => { handleChangeRoleForUser(row.original, v) }} defaultValue={row.getValue("roleId")}>
+              <SelectTrigger>
+                <SelectValue placeholder="Select a role" />
+              </SelectTrigger>
+              <SelectContent>
+                {roleList.map((role) => (
+                  <SelectItem key={role._id} value={role._id!}>
+                    {role.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            // <div>{getRoleName(row.getValue("roleId"))}</div>
+          )
+        },
       },
       {
         accessorKey: "createdAt",

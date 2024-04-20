@@ -48,6 +48,12 @@ function LoginForm() {
         document.cookie = `user-email=${userDataRes.email}`;
         document.cookie = `user-full-name=${userDataRes.fullName}`;
         document.cookie = `user-role-id=${userDataRes.roleId}`;
+        document.cookie = `menu-permissions=${JSON.stringify(
+          userDataRes.menuPermissions
+        )}`;
+        document.cookie = `function-permissions=${JSON.stringify(
+          userDataRes.functionPermissions
+        )}`;
 
         router.push("/dashboard");
       }

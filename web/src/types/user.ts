@@ -6,6 +6,8 @@ export type User = {
   password?: string;
   fullName: string;
   roleId: string;
+  menuPermissions?: string[];
+  functionPermissions?: string[];
 };
 
 export type UserInfoCookie = {

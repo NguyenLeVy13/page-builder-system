@@ -1,9 +1,6 @@
 "use client";
 
-import {
-  useState,
-  useMemo,
-} from "react";
+import { useState, useMemo } from "react";
 import { formatDateWithTime } from "@/lib/format";
 
 import {
@@ -45,14 +42,20 @@ import {
 
 import { Template } from "@/types/template";
 import Link from "next/link";
+import useFunctionPermission from "@/hooks/useFunctionPermission";
 
 type Props = {
   data: Template[];
   onDeleteTemplate: (templateId: string) => void;
 };
 
-function TemplateTable(
-  { data = [], onDeleteTemplate = (templateId: string) => {} }: Props) {
+function TemplateTable({
+  data = [],
+  onDeleteTemplate = (templateId: string) => {},
+}: Props) {
+  // ? Hooks
+  const funcPermission = useFunctionPermission();
+
   const columns: ColumnDef<Template>[] = useMemo(() => {
     return [
       {
@@ -94,9 +97,7 @@ function TemplateTable(
             </Button>
           );
         },
-        cell: ({ row }) => (
-          <div className="lowercase">{row.getValue("title")}</div>
-        ),
+        cell: ({ row }) => <div>{row.getValue("title")}</div>,
       },
       {
         accessorKey: "createdAt",
@@ -119,15 +120,19 @@ function TemplateTable(
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
-                <DropdownMenuItem asChild className="cursor-pointer">
-                  <Link href={`/builder/template/${templateId}`}>Edit</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem
-                  className="cursor-pointer"
-                  onClick={() => onDeleteTemplate(templateId!)}
-                >
-                  Delete
-                </DropdownMenuItem>
+                {funcPermission.check("edit-template") && (
+                  <DropdownMenuItem asChild className="cursor-pointer">
+                    <Link href={`/builder/template/${templateId}`}>Edit</Link>
+                  </DropdownMenuItem>
+                )}
+                {funcPermission.check("delete-template") && (
+                  <DropdownMenuItem
+                    className="cursor-pointer"
+                    onClick={() => onDeleteTemplate(templateId!)}
+                  >
+                    Delete
+                  </DropdownMenuItem>
+                )}
               </DropdownMenuContent>
             </DropdownMenu>
           );

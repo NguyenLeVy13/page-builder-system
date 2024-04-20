@@ -1,0 +1,112 @@
+[{
+  "_id": {
+    "$oid": "66239585a1c8f7920addacfa"
+  },
+  "roleId": "66210ac900c03f9e5770c486",
+  "menuId": "6620c1b2591ccf9a1e369682",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "66239585a1c8f7920addacfd"
+  },
+  "roleId": "66210ac900c03f9e5770c486",
+  "menuId": "662287339bc414cd854dabae",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "66239585a1c8f7920addad00"
+  },
+  "roleId": "66210ac900c03f9e5770c486",
+  "menuId": "6622873b9bc414cd854dabb3",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "66239586a1c8f7920addad03"
+  },
+  "roleId": "66210ac900c03f9e5770c486",
+  "menuId": "662287509bc414cd854dabb8",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "66239613a1c8f7920addad58"
+  },
+  "roleId": "66210ac900c03f9e5770c486",
+  "menuId": "662287579bc414cd854dabbd",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "66239614a1c8f7920addad5b"
+  },
+  "roleId": "66210ac900c03f9e5770c486",
+  "menuId": "6622875d9bc414cd854dabc2",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "66239614a1c8f7920addad5e"
+  },
+  "roleId": "66210ac900c03f9e5770c486",
+  "menuId": "662287659bc414cd854dabc7",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "66239615a1c8f7920addad61"
+  },
+  "roleId": "66210ac900c03f9e5770c486",
+  "menuId": "6622876b9bc414cd854dabcc",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6623961ea1c8f7920addad6c"
+  },
+  "roleId": "66237981cc9156253862aa44",
+  "menuId": "6620c1b2591ccf9a1e369682",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "66239621a1c8f7920addad6f"
+  },
+  "roleId": "66237981cc9156253862aa44",
+  "menuId": "662287509bc414cd854dabb8",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "66239621a1c8f7920addad72"
+  },
+  "roleId": "66237981cc9156253862aa44",
+  "menuId": "6622873b9bc414cd854dabb3",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "66239621a1c8f7920addad75"
+  },
+  "roleId": "66237981cc9156253862aa44",
+  "menuId": "662287339bc414cd854dabae",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6623989da1c8f7920addadf9"
+  },
+  "roleId": "66210ac900c03f9e5770c486",
+  "menuId": "66239899a1c8f7920addade0",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "662398a1a1c8f7920addae04"
+  },
+  "roleId": "66237981cc9156253862aa44",
+  "menuId": "66239899a1c8f7920addade0",
+  "__v": 0
+}]

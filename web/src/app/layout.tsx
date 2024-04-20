@@ -26,7 +26,7 @@ export default function RootLayout({
           fontSans.variable
         )}
       >
-        <Toaster position="top-right" richColors />
+        <Toaster position="bottom-right" richColors />
         <div className="h-screen w-full">
           {children}
         </div>

@@ -1,7 +1,7 @@
-'use client'
+"use client";
 
 import { useState, useImperativeHandle, forwardRef } from "react";
-import { deleteTemplate } from "@/services/templateApi";
+import { deleteFunction } from "@/services/functionApi";
 
 import {
   AlertDialog,
@@ -15,23 +15,23 @@ import {
 import { toast } from "sonner";
 
 type Props = {
-  onConfirm: () => void;
+  onReload: () => void;
 };
 
 type DeleteConfirmDialogRef = {
-  open: (templateId: string) => void;
+  open: (funcId: string) => void;
 };
 
-function DeleteConfirmDialog({ onConfirm = () => {} }: Props, ref: any) {
+function DeleteConfirmDialog({ onReload = () => {} }: Props, ref: any) {
   const [isOpen, setIsOpen] = useState(false);
-  const [templateId, setTemplateId] = useState("");
+  const [funcId, setFuncId] = useState("");
 
   async function handleConfirm() {
-    const res = await deleteTemplate(templateId);
+    const res = await deleteFunction(funcId);
     if (res.code === 0) {
-      toast.success("Delete template successfully");
+      toast.success("Delete function successfully");
       setIsOpen(false);
-      onConfirm();
+      onReload();
     } else {
       toast.error(res.message);
     }
@@ -40,9 +40,9 @@ function DeleteConfirmDialog({ onConfirm = () => {} }: Props, ref: any) {
   useImperativeHandle(
     ref,
     () => ({
-      open: (templateId: string) => {
-        setTemplateId(templateId);
-        setIsOpen(true)
+      open: (funcId: string) => {
+        setFuncId(funcId);
+        setIsOpen(true);
       },
     }),
     []
@@ -52,7 +52,9 @@ function DeleteConfirmDialog({ onConfirm = () => {} }: Props, ref: any) {
     <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Are you sure to delete this template?</AlertDialogTitle>
+          <AlertDialogTitle>
+            Are you sure to delete this function?
+          </AlertDialogTitle>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
@@ -63,5 +65,5 @@ function DeleteConfirmDialog({ onConfirm = () => {} }: Props, ref: any) {
   );
 }
 
-export type { DeleteConfirmDialogRef }
+export type { DeleteConfirmDialogRef };
 export default forwardRef(DeleteConfirmDialog);

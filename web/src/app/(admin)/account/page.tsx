@@ -19,8 +19,11 @@ import { toast } from "sonner";
 import ChangePasswordDialog, {
   ChangePasswordDialogRef,
 } from "./components/change-password-dialog";
+import useFunctionPermission from "@/hooks/useFunctionPermission";
 
 function Account() {
+  const funcPermission = useFunctionPermission();
+
   const userInfoCookie = useMemo(() => getUserInfoCookie(), []);
 
   const emailRef = useRef<HTMLInputElement>(null);
@@ -92,10 +95,19 @@ function Account() {
                 id="fullName"
                 placeholder="Enter your full name..."
               />
-              <Button onClick={handleSaveFullname}>Save</Button>
+              <Button
+                onClick={handleSaveFullname}
+                disabled={!funcPermission.check("update-account-info")}
+              >
+                Save
+              </Button>
             </div>
             <div className="flex flex-col space-y-1.5">
-              <Button variant="secondary" onClick={handleOpenPasswordDialog}>
+              <Button
+                variant="secondary"
+                onClick={handleOpenPasswordDialog}
+                disabled={!funcPermission.check("change-account-password")}
+              >
                 Change password
               </Button>
             </div>

@@ -18,19 +18,22 @@ import {
   PersonIcon,
 } from "@radix-ui/react-icons";
 
+import useMenuPermission from "@/hooks/useMenuPermission";
+
 const menuItems: { name: string; path: string; icon: any }[] = [
   { name: "Dashboard", path: "/dashboard", icon: <DesktopIcon /> },
   { name: "Templates", path: "/templates", icon: <StackIcon /> },
-  { name: "Blocks", path: "/blocks", icon: <TokensIcon /> },
+  { name: "Blocks", path: "/blocks", icon: <MixIcon /> },
   { name: "Builder", path: "/builder/new/blank", icon: <ComponentBooleanIcon /> },
   { name: "Roles", path: "/roles", icon: <LightningBoltIcon /> },
-  { name: "Menu", path: "/menu", icon: <MixIcon /> },
+  { name: "Menu", path: "/menu", icon: <TokensIcon /> },
   { name: "Functions", path: "/functions", icon: <MagicWandIcon /> },
   { name: "Users", path: "/users", icon: <PersonIcon /> },
 ];
 
 function Navigation() {
   const pathname = usePathname();
+  const menuPermission = useMenuPermission();
 
   return (
     <>
@@ -42,7 +45,7 @@ function Navigation() {
           <Package2 className="h-6 w-6" />
           <span className="sr-only">Acme Inc</span>
         </Link>
-        {menuItems.map((i) => (
+        {menuItems.filter(i => menuPermission.check(i.path)).map((i) => (
           <Link
             key={i.path}
             href={i.path}
@@ -71,7 +74,7 @@ function Navigation() {
               <Package2 className="h-6 w-6" />
               <span className="sr-only">Acme Inc</span>
             </Link>
-            {menuItems.map((i) => (
+            {menuItems.filter(i => menuPermission.check(i.path)).map((i) => (
               <Link
                 key={i.path}
                 href={i.path}

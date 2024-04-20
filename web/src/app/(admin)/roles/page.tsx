@@ -12,12 +12,21 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import RoleTable from "./components/role-table";
 import DeleteConfirmDialog from "./components/delete-confirm-dialog";
+import CreateOrUpdateDialog, {
+  CreateOrUpdateDialogRef,
+} from "./components/create-or-update-dialog";
 
-//? APIS
 import { getRoleList } from "@/services/roleApi";
+import type { PermissionDrawerRef } from "./components/permission-drawer";
+import PermissionDrawer from "./components/permission-drawer";
+import useFunctionPermission from "@/hooks/useFunctionPermission";
 
 function Roles() {
+  const funcPermission = useFunctionPermission();
+
   const deleteConfirmDialogRef = useRef<DeleteConfirmDialogRef>(null);
+  const createOrUpdateDialogRef = useRef<CreateOrUpdateDialogRef>(null);
+  const permissionDrawerRef = useRef<PermissionDrawerRef>(null);
 
   const [roleList, setRoleList] = useState<Role[]>([]);
 
@@ -34,8 +43,12 @@ function Roles() {
     }
   }
 
-  function handleEdit(id: string) {
+  function handleOpenPermissionDrawer(role: Role) {
+    permissionDrawerRef.current?.open(role);
+  }
 
+  function handleEdit(role: Role) {
+    createOrUpdateDialogRef.current?.open(role);
   }
 
   function handleDelete(id: string) {
@@ -43,11 +56,12 @@ function Roles() {
     deleteConfirmDialogRef.current.open(id);
   }
 
-  function handleConfirmDelete() {
-    fetchDataList();
+  function handleOpenCreateOrUpdateDialog() {
+    createOrUpdateDialogRef.current?.open();
   }
 
-  function handleOpenCreateOrUpdateDialog() {
+  function handleReload() {
+    fetchDataList();
   }
 
   return (
@@ -55,12 +69,17 @@ function Roles() {
       <Card>
         <CardHeader>
           <div className="flex justify-between">
-            <CardTitle>Template list</CardTitle>
+            <CardTitle>Role list</CardTitle>
             <div>
-              <Button className="me-2" onClick={() => handleOpenCreateOrUpdateDialog()}>
-                <PlusIcon className="mr-2 h-4 w-4" />
-                New role
-              </Button>
+              {funcPermission.check("create-role") && (
+                <Button
+                  className="me-2"
+                  onClick={() => handleOpenCreateOrUpdateDialog()}
+                >
+                  <PlusIcon className="mr-2 h-4 w-4" />
+                  New role
+                </Button>
+              )}
             </div>
           </div>
         </CardHeader>
@@ -68,16 +87,24 @@ function Roles() {
         <CardContent>
           <RoleTable
             data={roleList}
+            onPermission={handleOpenPermissionDrawer}
             onEdit={handleEdit}
             onDelete={handleDelete}
           />
         </CardContent>
       </Card>
 
+      <CreateOrUpdateDialog
+        ref={createOrUpdateDialogRef}
+        onReload={handleReload}
+      />
+
       <DeleteConfirmDialog
         ref={deleteConfirmDialogRef}
-        onConfirm={handleConfirmDelete}
+        onReload={handleReload}
       />
+
+      <PermissionDrawer ref={permissionDrawerRef} />
     </div>
   );
 }

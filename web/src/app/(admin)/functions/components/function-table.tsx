@@ -40,25 +40,23 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-import { Role } from "@/types/role";
+import { FuncType } from "@/types/function";
 import useFunctionPermission from "@/hooks/useFunctionPermission";
 
 type Props = {
-  data: Role[];
-  onPermission: (role: Role) => void;
-  onEdit: (role: Role) => void;
-  onDelete: (roleId: string) => void;
+  data: FuncType[];
+  onEdit: (func: FuncType) => void;
+  onDelete: (funcId: string) => void;
 };
 
-function RoleTable({
+function FunctionTable({
   data = [],
-  onPermission = (role: Role) => {},
-  onEdit = (role: Role) => {},
-  onDelete = (roleId: string) => {},
+  onEdit = (func: FuncType) => {},
+  onDelete = (funcId: string) => {},
 }: Props) {
   const funcPermission = useFunctionPermission();
 
-  const columns: ColumnDef<Role>[] = useMemo(() => {
+  const columns: ColumnDef<FuncType>[] = useMemo(() => {
     return [
       {
         id: "select",
@@ -94,12 +92,29 @@ function RoleTable({
                 column.toggleSorting(column.getIsSorted() === "asc")
               }
             >
-              Role name
+              Function name
               <CaretSortIcon className="ml-2 h-4 w-4" />
             </Button>
           );
         },
         cell: ({ row }) => <div>{row.getValue("name")}</div>,
+      },
+      {
+        accessorKey: "key",
+        header: ({ column }) => {
+          return (
+            <Button
+              variant="ghost"
+              onClick={() =>
+                column.toggleSorting(column.getIsSorted() === "asc")
+              }
+            >
+              Function key
+              <CaretSortIcon className="ml-2 h-4 w-4" />
+            </Button>
+          );
+        },
+        cell: ({ row }) => <div>{row.getValue("key")}</div>,
       },
       {
         accessorKey: "createdAt",
@@ -112,7 +127,7 @@ function RoleTable({
         id: "actions",
         enableHiding: false,
         cell: ({ row }) => {
-          const { _id: roleId } = row.original;
+          const { _id: funcId } = row.original;
           return (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -122,15 +137,7 @@ function RoleTable({
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
-                {funcPermission.check("set-role-permissions") && (
-                  <DropdownMenuItem
-                    className="cursor-pointer"
-                    onClick={() => onPermission(row.original)}
-                  >
-                    Permission
-                  </DropdownMenuItem>
-                )}
-                {funcPermission.check("edit-role") && (
+                {funcPermission.check("edit-function") && (
                   <DropdownMenuItem
                     className="cursor-pointer"
                     onClick={() => onEdit(row.original)}
@@ -138,10 +145,10 @@ function RoleTable({
                     Edit
                   </DropdownMenuItem>
                 )}
-                {funcPermission.check("delete-role") && (
+                {funcPermission.check("delete-function") && (
                   <DropdownMenuItem
                     className="cursor-pointer"
-                    onClick={() => onDelete(roleId!)}
+                    onClick={() => onDelete(funcId!)}
                   >
                     Delete
                   </DropdownMenuItem>
@@ -152,7 +159,7 @@ function RoleTable({
         },
       },
     ];
-  }, [onEdit, onDelete, onPermission]);
+  }, [onEdit, onDelete]);
 
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -299,4 +306,4 @@ function RoleTable({
   );
 }
 
-export default RoleTable;
+export default FunctionTable;

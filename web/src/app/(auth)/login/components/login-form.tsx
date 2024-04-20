@@ -48,6 +48,12 @@ function LoginForm() {
         document.cookie = `user-email=${userDataRes.email}`;
         document.cookie = `user-full-name=${userDataRes.fullName}`;
         document.cookie = `user-role-id=${userDataRes.roleId}`;
+        document.cookie = `menu-permissions=${JSON.stringify(
+          userDataRes.menuPermissions
+        )}`;
+        document.cookie = `function-permissions=${JSON.stringify(
+          userDataRes.functionPermissions
+        )}`;
 
         router.push("/dashboard");
       }
@@ -83,7 +89,12 @@ function LoginForm() {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Input placeholder="Email" {...field} />
+                      <Input
+                        {...field}
+                        id="email"
+                        type="email"
+                        placeholder="Email"
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -98,8 +109,9 @@ function LoginForm() {
                   <FormItem>
                     <FormControl>
                       <Input
-                        type="password"
                         {...field}
+                        id="password"
+                        type="password"
                         placeholder="Password"
                       />
                     </FormControl>

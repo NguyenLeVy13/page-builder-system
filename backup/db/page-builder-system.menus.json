@@ -1,0 +1,126 @@
+[{
+  "_id": {
+    "$oid": "6620c1b2591ccf9a1e369682"
+  },
+  "name": "Dashboard",
+  "pathname": "/dashboard",
+  "createdAt": {
+    "$date": "2024-04-18T06:46:10.772Z"
+  },
+  "updatedAt": {
+    "$date": "2024-04-19T15:00:58.602Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "662287339bc414cd854dabae"
+  },
+  "name": "Templates",
+  "pathname": "/templates",
+  "createdAt": {
+    "$date": "2024-04-19T15:01:07.064Z"
+  },
+  "updatedAt": {
+    "$date": "2024-04-19T15:01:07.064Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6622873b9bc414cd854dabb3"
+  },
+  "name": "Blocks",
+  "pathname": "/blocks",
+  "createdAt": {
+    "$date": "2024-04-19T15:01:15.266Z"
+  },
+  "updatedAt": {
+    "$date": "2024-04-19T15:01:15.266Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "662287509bc414cd854dabb8"
+  },
+  "name": "Builder",
+  "pathname": "/builder",
+  "createdAt": {
+    "$date": "2024-04-19T15:01:36.549Z"
+  },
+  "updatedAt": {
+    "$date": "2024-04-20T09:29:42.097Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "662287579bc414cd854dabbd"
+  },
+  "name": "Roles",
+  "pathname": "/roles",
+  "createdAt": {
+    "$date": "2024-04-19T15:01:43.063Z"
+  },
+  "updatedAt": {
+    "$date": "2024-04-19T15:01:43.063Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6622875d9bc414cd854dabc2"
+  },
+  "name": "Menu",
+  "pathname": "/menu",
+  "createdAt": {
+    "$date": "2024-04-19T15:01:49.293Z"
+  },
+  "updatedAt": {
+    "$date": "2024-04-19T15:02:08.305Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "662287659bc414cd854dabc7"
+  },
+  "name": "Functions",
+  "pathname": "/functions",
+  "createdAt": {
+    "$date": "2024-04-19T15:01:57.338Z"
+  },
+  "updatedAt": {
+    "$date": "2024-04-19T15:01:57.338Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6622876b9bc414cd854dabcc"
+  },
+  "name": "Users",
+  "pathname": "/users",
+  "createdAt": {
+    "$date": "2024-04-19T15:02:03.016Z"
+  },
+  "updatedAt": {
+    "$date": "2024-04-19T15:02:03.016Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "66239899a1c8f7920addade0"
+  },
+  "name": "Account",
+  "pathname": "/account",
+  "createdAt": {
+    "$date": "2024-04-20T10:27:37.833Z"
+  },
+  "updatedAt": {
+    "$date": "2024-04-20T10:27:37.833Z"
+  },
+  "__v": 0
+}]

@@ -1,6 +1,6 @@
 export type RoleMenu = {
   roleId: string;
-  functionId: string;
+  menuId: string;
 }
 
 export type RoleMenuListResponse = {

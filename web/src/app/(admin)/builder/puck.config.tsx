@@ -22,6 +22,8 @@ import type { TextProps } from "./blocks/Text";
 import { Text } from "./blocks/Text";
 import type { VerticalSpaceProps } from "./blocks/VerticalSpace";
 import { VerticalSpace } from "./blocks/VerticalSpace";
+import type { PricingProps } from "./blocks/Pricing";
+import { Pricing } from "./blocks/Pricing";
 
 type Props = {
   Blank: BlankProps;
@@ -35,6 +37,7 @@ type Props = {
   Stats: StatsProps;
   Text: TextProps;
   VerticalSpace: VerticalSpaceProps;
+  Pricing: PricingProps;
 };
 
 export const config: Config<Props> = {
@@ -50,6 +53,7 @@ export const config: Config<Props> = {
     Stats,
     Text,
     VerticalSpace,
+    Pricing,
   },
 };
 

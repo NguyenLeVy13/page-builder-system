@@ -1,5 +1,11 @@
 "use client";
-import { forwardRef, useImperativeHandle, useState, useEffect } from "react";
+import {
+  forwardRef,
+  useImperativeHandle,
+  useState,
+  useEffect,
+  useCallback,
+} from "react";
 
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -18,12 +24,29 @@ import { Role } from "@/types/role";
 
 import { getMenuList } from "@/services/menuApi";
 import { getFunctionList } from "@/services/functionApi";
+import {
+  getRoleMenuList,
+  getRoleFunctionList,
+  registerRoleMenu,
+  deregisterRoleMenu,
+  registerRoleFunction,
+  deregisterRoleFunction,
+} from "@/services/permissionApi";
+
 import { Menu } from "@/types/menu";
-import { FuncType } from "@/types/function";
+import { FuncType, FunctionListResponse } from "@/types/function";
 
 export type PermissionDrawerRef = {
   open: (role?: Role) => void;
   close: () => void;
+};
+
+type PermissionMenu = Menu & {
+  checked?: boolean;
+};
+
+type PermissionFunction = FuncType & {
+  checked?: boolean;
 };
 
 type Props = {};
@@ -31,12 +54,54 @@ type Props = {};
 function PermissionDrawer(props: Props, ref: any) {
   const [isOpen, setIsOpen] = useState(false);
   const [role, setRole] = useState<Role | null>(null);
-  const [menuList, setMenuList] = useState<Menu[]>([]);
-  const [functionList, setFunctionList] = useState<FuncType[]>([]);
+  const [menuList, setMenuList] = useState<PermissionMenu[]>([]);
+  const [functionList, setFunctionList] = useState<PermissionFunction[]>([]);
+
+  const fetchPermissionMenuList = useCallback(async (data: PermissionMenu[]) => {
+    const params = new URLSearchParams();
+    const res = await getRoleMenuList(params);
+    if (res.code === 0) {
+      const newMenuList = data.map((menu) => {
+        menu.checked = res.data.find((i) => i.menuId === menu._id)
+          ? true
+          : false;
+        return menu;
+      });
+
+      setMenuList(newMenuList);
+    }
+  }, []);
+
+  const fetchPermissionFunctionList = useCallback(async (data: PermissionFunction[]) => {
+    const params = new URLSearchParams();
+    const res = await getRoleFunctionList(params);
+    if (res.code === 0) {
+      const newFuncList = data.map((func) => {
+        func.checked = res.data.find((i) => i.functionId === func._id)
+          ? true
+          : false;
+        return func;
+      });
+
+      setFunctionList(newFuncList);
+    }
+  }, []);
 
   useEffect(() => {
-    fetchMenuList();
-    fetchFunctionList();
+    ~(async () => {
+      const [fetchMenuListRes, fetchFunctionListRes] = await Promise.all([
+        fetchMenuList(),
+        fetchFunctionList(),
+      ]);
+      if (fetchMenuListRes.code === 0) {
+        fetchPermissionMenuList(fetchMenuListRes.data);
+        setMenuList(fetchMenuListRes.data);
+      }
+      if (fetchFunctionListRes.code === 0) {
+        fetchPermissionFunctionList(fetchFunctionListRes.data);
+        setFunctionList(fetchFunctionListRes.data);
+      }
+    })();
   }, []);
 
   function close() {
@@ -46,17 +111,13 @@ function PermissionDrawer(props: Props, ref: any) {
   async function fetchMenuList() {
     const params = new URLSearchParams();
     const res = await getMenuList(params);
-    if (res.code === 0) {
-      setMenuList(res.data);
-    }
+    return res;
   }
 
   async function fetchFunctionList() {
     const params = new URLSearchParams();
     const res = await getFunctionList(params);
-    if (res.code === 0) {
-      setFunctionList(res.data);
-    }
+    return res;
   }
 
   useImperativeHandle(
@@ -91,7 +152,10 @@ function PermissionDrawer(props: Props, ref: any) {
             </TabsList>
             <TabsContent value="menu">
               {menuList.map((i) => (
-                <div key={i._id} className="flex items-center space-x-2 mb-4 cursor-pointer">
+                <div
+                  key={i._id}
+                  className="flex items-center space-x-2 mb-4 cursor-pointer"
+                >
                   <Checkbox id={i._id} value={i._id} />
                   <label
                     htmlFor={i._id}
@@ -104,7 +168,10 @@ function PermissionDrawer(props: Props, ref: any) {
             </TabsContent>
             <TabsContent value="functions">
               {functionList.map((i) => (
-                <div key={i._id} className="flex items-center space-x-2 mb-4 cursor-pointer">
+                <div
+                  key={i._id}
+                  className="flex items-center space-x-2 mb-4 cursor-pointer"
+                >
                   <Checkbox id={i._id} value={i._id} />
                   <label
                     htmlFor={i._id}

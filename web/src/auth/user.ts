@@ -15,7 +15,7 @@ export function checkMenuPermission(request: NextRequest): boolean {
 
   const pathname = request.nextUrl.pathname;
   const hasPermission = menuPermissions.find(
-    (menu: Menu) => menu.pathname === pathname
+    (menu: Menu) => menu.pathname === pathname || pathname.includes(menu.pathname)
   );
   return Boolean(hasPermission) ?? false;
 }

@@ -12,6 +12,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import { toast } from "sonner";
 
 type Props = {
   onReload: () => void;
@@ -26,9 +27,14 @@ function DeleteConfirmDialog({ onReload = () => {} }: Props, ref: any) {
   const [roleId, setRoleId] = useState("");
 
   async function handleConfirm() {
-    await deleteRole(roleId);
-    setIsOpen(false);
-    onReload();
+    const res = await deleteRole(roleId);
+    if (res.code !== 0) {
+      toast.success("Delete role successfully");
+      setIsOpen(false);
+      onReload();
+    } else {
+      toast.error(res.message);
+    }
   }
 
   useImperativeHandle(

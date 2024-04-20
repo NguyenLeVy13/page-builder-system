@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import { useState, useImperativeHandle, forwardRef } from "react";
 import { deleteFunction } from "@/services/functionApi";
@@ -12,6 +12,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import { toast } from "sonner";
 
 type Props = {
   onReload: () => void;
@@ -26,9 +27,14 @@ function DeleteConfirmDialog({ onReload = () => {} }: Props, ref: any) {
   const [funcId, setFuncId] = useState("");
 
   async function handleConfirm() {
-    await deleteFunction(funcId);
-    setIsOpen(false);
-    onReload();
+    const res = await deleteFunction(funcId);
+    if (res.code === 0) {
+      toast.success("Delete function successfully");
+      setIsOpen(false);
+      onReload();
+    } else {
+      toast.error(res.message);
+    }
   }
 
   useImperativeHandle(
@@ -36,7 +42,7 @@ function DeleteConfirmDialog({ onReload = () => {} }: Props, ref: any) {
     () => ({
       open: (funcId: string) => {
         setFuncId(funcId);
-        setIsOpen(true)
+        setIsOpen(true);
       },
     }),
     []
@@ -46,7 +52,9 @@ function DeleteConfirmDialog({ onReload = () => {} }: Props, ref: any) {
     <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Are you sure to delete this function?</AlertDialogTitle>
+          <AlertDialogTitle>
+            Are you sure to delete this function?
+          </AlertDialogTitle>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
@@ -57,5 +65,5 @@ function DeleteConfirmDialog({ onReload = () => {} }: Props, ref: any) {
   );
 }
 
-export type { DeleteConfirmDialogRef }
+export type { DeleteConfirmDialogRef };
 export default forwardRef(DeleteConfirmDialog);

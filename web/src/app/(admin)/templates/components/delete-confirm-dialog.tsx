@@ -12,6 +12,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import { toast } from "sonner";
 
 type Props = {
   onConfirm: () => void;
@@ -26,9 +27,14 @@ function DeleteConfirmDialog({ onConfirm = () => {} }: Props, ref: any) {
   const [templateId, setTemplateId] = useState("");
 
   async function handleConfirm() {
-    await deleteTemplate(templateId);
-    setIsOpen(false);
-    onConfirm();
+    const res = await deleteTemplate(templateId);
+    if (res.code === 0) {
+      toast.success("Delete template successfully");
+      setIsOpen(false);
+      onConfirm();
+    } else {
+      toast.error(res.message);
+    }
   }
 
   useImperativeHandle(

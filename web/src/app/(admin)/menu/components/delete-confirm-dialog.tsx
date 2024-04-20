@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useImperativeHandle, forwardRef } from "react";
-import { deleteTemplate } from "@/services/templateApi";
+import { deleteMenu } from "@/services/menuApi";
 
 import {
   AlertDialog,
@@ -15,23 +15,23 @@ import {
 import { toast } from "sonner";
 
 type Props = {
-  onConfirm: () => void;
+  onReload: () => void;
 };
 
 type DeleteConfirmDialogRef = {
-  open: (templateId: string) => void;
+  open: (menuId: string) => void;
 };
 
-function DeleteConfirmDialog({ onConfirm = () => {} }: Props, ref: any) {
+function DeleteConfirmDialog({ onReload = () => {} }: Props, ref: any) {
   const [isOpen, setIsOpen] = useState(false);
-  const [templateId, setTemplateId] = useState("");
+  const [menuId, setMenuId] = useState("");
 
   async function handleConfirm() {
-    const res = await deleteTemplate(templateId);
-    if (res.code === 0) {
-      toast.success("Delete template successfully");
+    const res = await deleteMenu(menuId);
+    if (res.code !== 0) {
+      toast.success("Delete role successfully");
       setIsOpen(false);
-      onConfirm();
+      onReload();
     } else {
       toast.error(res.message);
     }
@@ -40,8 +40,8 @@ function DeleteConfirmDialog({ onConfirm = () => {} }: Props, ref: any) {
   useImperativeHandle(
     ref,
     () => ({
-      open: (templateId: string) => {
-        setTemplateId(templateId);
+      open: (menuId: string) => {
+        setMenuId(menuId);
         setIsOpen(true)
       },
     }),
@@ -52,7 +52,7 @@ function DeleteConfirmDialog({ onConfirm = () => {} }: Props, ref: any) {
     <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Are you sure to delete this template?</AlertDialogTitle>
+          <AlertDialogTitle>Are you sure to delete this menu?</AlertDialogTitle>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>

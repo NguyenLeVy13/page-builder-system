@@ -3,6 +3,7 @@ const Schema = mongoose.Schema;
 
 const FunctionSchema = new Schema({
 	name: { type: String, maxLength: 255, required: true },
+	key: { type: String, maxLength: 255, required: true },
 }, { timestamps: true });
 
 // Custom query

@@ -158,9 +158,17 @@ class UserController {
 				return;
 			}
 
+			const menuPermissions = await userExist.getMenuPermissions();
+			const functionPermissions = await userExist.getFunctionPermissions();
+
 			res.json({
 				code: 0,
-				data: { ...userExist._doc, password: undefined },
+				data: {
+					...userExist._doc,
+					password: undefined,
+					menuPermissions,
+					functionPermissions,
+				},
 				message: "Login successfully",
 			});
 		} catch (error) {

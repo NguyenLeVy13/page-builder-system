@@ -176,15 +176,13 @@ class RoleController {
 			});
 
 			if (deleteResult.deletedCount > 0) {
-				// Delele user of role
-				const removeRoleFromUsers = await RoleSchema.updateMany(
-					{},
+				// Set roleId = "" for all users have roleId = id
+				const removeRoleFromUsers = await UserSchema.updateMany(
 					{
-						$pull: {
-							users: {
-								role: id,
-							},
-						},
+						roleId: id,
+					},
+					{
+						roleId: "",
 					}
 				);
 

@@ -3,8 +3,11 @@ export type User = {
   createdAt?: string;
   updatedAt?: string;
   email: string;
+  password?: string;
   fullName: string;
   roleId: string;
+  menuPermissions?: string[];
+  functionPermissions?: string[];
 };
 
 export type UserInfoCookie = {

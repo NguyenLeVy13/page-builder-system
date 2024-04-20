@@ -1,5 +1,10 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
+const RoleMenuSchema = require("./RoleMenuModel");
+const RoleFunctionSchema = require("./RoleFunctionModel");
+const MenuSchema = require("./MenuModel");
+const FunctionSchema = require("./FunctionModel");
+
 const Schema = mongoose.Schema;
 
 const UserSchema = new Schema({
@@ -76,5 +81,58 @@ UserSchema.methods.getHashPassword = async function (password) {
 		return null
 	}
 };
+UserSchema.methods.getMenuPermissions = async function () {
+	try {
+		const menuPermissions = await RoleMenuSchema.find({
+			roleId: this.roleId,
+		});
+
+		const result = [];
+
+		for await (const permission of menuPermissions) {
+			// Find menu
+			const menuFound = await MenuSchema.findOne({
+				_id: permission.menuId,
+			});
+
+			if (!menuFound) return null;
+
+			result.push({
+				pathname: menuFound.pathname
+			});
+		}
+
+		return result;
+	} catch (error) {
+		return [];
+	}
+}
+UserSchema.methods.getFunctionPermissions = async function () {
+	try {
+		const funcPermissions = await RoleFunctionSchema.find({
+			roleId: this.roleId,
+		});
+
+		const result = [];
+
+		for await (const permission of funcPermissions) {
+			// Find function
+			const funcFound = await FunctionSchema.findOne({
+				_id: permission.functionId,
+			});
+
+			if (!funcFound) return null;
+
+			result.push({
+				key: funcFound.key
+			});
+		}
+
+		return result.filter(permission => permission !== null);
+	} catch (error) {
+		return [];
+	}
+}
+
 
 module.exports = mongoose.model("users", UserSchema);

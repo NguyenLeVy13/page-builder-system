@@ -39,26 +39,34 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
+import { User } from "@/types/user";
 import { Role } from "@/types/role";
+import { updateRoleById } from "@/services/userApi";
+import { toast } from "sonner";
 import useFunctionPermission from "@/hooks/useFunctionPermission";
 
 type Props = {
-  data: Role[];
-  onPermission: (role: Role) => void;
-  onEdit: (role: Role) => void;
-  onDelete: (roleId: string) => void;
+  data: User[];
+  roleList: Role[];
+  onDelete: (userId: string) => void;
 };
 
-function RoleTable({
+function UserTable({
   data = [],
-  onPermission = (role: Role) => {},
-  onEdit = (role: Role) => {},
-  onDelete = (roleId: string) => {},
+  roleList = [],
+  onDelete = (userId: string) => {},
 }: Props) {
   const funcPermission = useFunctionPermission();
 
-  const columns: ColumnDef<Role>[] = useMemo(() => {
+  const columns: ColumnDef<User>[] = useMemo(() => {
     return [
       {
         id: "select",
@@ -85,7 +93,7 @@ function RoleTable({
         enableHiding: false,
       },
       {
-        accessorKey: "name",
+        accessorKey: "email",
         header: ({ column }) => {
           return (
             <Button
@@ -94,12 +102,81 @@ function RoleTable({
                 column.toggleSorting(column.getIsSorted() === "asc")
               }
             >
-              Role name
+              Email
               <CaretSortIcon className="ml-2 h-4 w-4" />
             </Button>
           );
         },
-        cell: ({ row }) => <div>{row.getValue("name")}</div>,
+        cell: ({ row }) => <div>{row.getValue("email")}</div>,
+      },
+      {
+        accessorKey: "fullName",
+        header: ({ column }) => {
+          return (
+            <Button
+              variant="ghost"
+              onClick={() =>
+                column.toggleSorting(column.getIsSorted() === "asc")
+              }
+            >
+              Full name
+              <CaretSortIcon className="ml-2 h-4 w-4" />
+            </Button>
+          );
+        },
+        cell: ({ row }) => <div>{row.getValue("fullName")}</div>,
+      },
+      {
+        accessorKey: "roleId",
+        header: ({ column }) => {
+          return (
+            <Button
+              variant="ghost"
+              onClick={() =>
+                column.toggleSorting(column.getIsSorted() === "asc")
+              }
+            >
+              Role
+              <CaretSortIcon className="ml-2 h-4 w-4" />
+            </Button>
+          );
+        },
+        cell: ({ row }) => {
+          async function handleChangeRoleForUser(user: User, roleId: string) {
+            const res = await updateRoleById(user._id!, {
+              newRoleId: roleId,
+            });
+            if (res.code === 0) {
+              toast.success("Update role successfully");
+            } else {
+              toast.error(res.message);
+            }
+          }
+
+          if (funcPermission.check("set-user-role")) {
+            return (
+              <Select
+                onValueChange={(v) => {
+                  handleChangeRoleForUser(row.original, v);
+                }}
+                defaultValue={row.getValue("roleId")}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select a role" />
+                </SelectTrigger>
+                <SelectContent>
+                  {roleList.map((role) => (
+                    <SelectItem key={role._id} value={role._id!}>
+                      {role.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            );
+          }
+
+          return <div>{getRoleName(row.getValue("roleId"))}</div>;
+        },
       },
       {
         accessorKey: "createdAt",
@@ -112,7 +189,7 @@ function RoleTable({
         id: "actions",
         enableHiding: false,
         cell: ({ row }) => {
-          const { _id: roleId } = row.original;
+          const { _id: userId } = row.original;
           return (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -122,26 +199,10 @@ function RoleTable({
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
-                {funcPermission.check("set-role-permissions") && (
+                {funcPermission.check("delete-user") && (
                   <DropdownMenuItem
                     className="cursor-pointer"
-                    onClick={() => onPermission(row.original)}
-                  >
-                    Permission
-                  </DropdownMenuItem>
-                )}
-                {funcPermission.check("edit-role") && (
-                  <DropdownMenuItem
-                    className="cursor-pointer"
-                    onClick={() => onEdit(row.original)}
-                  >
-                    Edit
-                  </DropdownMenuItem>
-                )}
-                {funcPermission.check("delete-role") && (
-                  <DropdownMenuItem
-                    className="cursor-pointer"
-                    onClick={() => onDelete(roleId!)}
+                    onClick={() => onDelete(userId!)}
                   >
                     Delete
                   </DropdownMenuItem>
@@ -152,7 +213,7 @@ function RoleTable({
         },
       },
     ];
-  }, [onEdit, onDelete, onPermission]);
+  }, [onDelete]);
 
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -178,14 +239,18 @@ function RoleTable({
     },
   });
 
+  function getRoleName(roleId: string) {
+    return roleList.find((role) => role._id === roleId)?.name ?? "Unknown";
+  }
+
   return (
     <div className="w-full">
       <div className="flex items-center py-4">
         <Input
-          placeholder="Enter name to search..."
-          value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
+          placeholder="Enter email to search..."
+          value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
-            table.getColumn("name")?.setFilterValue(event.target.value)
+            table.getColumn("email")?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
         />
@@ -299,4 +364,4 @@ function RoleTable({
   );
 }
 
-export default RoleTable;
+export default UserTable;
